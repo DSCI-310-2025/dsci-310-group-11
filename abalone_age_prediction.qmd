@@ -1,1 +1,62 @@
+---
+title: "Abalone Age Prediction"
+author: "Edward Sobczak"
+format: html
+---
 
+## Title
+
+
+## Summary
+
+
+## Introduction
+
+
+
+## Methods and Results
+
+The first analysis step is to load necessary packages and set the working directory.
+
+```{r}
+setwd(getwd())
+library(tidyverse)
+```
+
+The second analysis read in the dataset from the internet. In our case, the Abalone dataset from the UCI Machine Learning Repository, and is stored in a zipped folder. The following code reads in the data and downloads it to the `data` folder of the working directory. This code **only needs to be run once**, so has now been made display-only.
+
+```r
+read_data <- function(file_path) {
+  temp <- tempfile()
+  zipped <- download.file(url = file_path, destfile = temp)
+  file <- unz(temp, "abalone.data")
+  abalone_data <- read_csv(file, col_names = c("sex", 
+                                               "length", 
+                                               "diameter", 
+                                               "height", 
+                                               "whole_weight", 
+                                               "shucked_weight", 
+                                               "viscera_weight", 
+                                               "shell_weight", 
+                                               "rings"))
+  
+  unlink(temp)
+  
+  write_csv(abalone_data, file = "data/abalone_data.csv")
+}
+
+read_data("https://archive.ics.uci.edu/static/public/1/abalone.zip")
+```
+While the data has been stored in the repository, it has not yet been read into R. The following code reads the data into R.
+
+```{r}
+abalone_data <- read_csv("data/abalone_data.csv")
+```
+
+
+
+## Discussion
+
+
+
+## References
