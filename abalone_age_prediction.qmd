@@ -21,6 +21,8 @@ The first analysis step is to load necessary packages and set the working direct
 ```{r}
 setwd(getwd())
 library(tidyverse)
+library(tidymodels)
+library(GGally)
 ```
 
 The second analysis read in the dataset from the internet. In our case, the Abalone dataset from the UCI Machine Learning Repository, and is stored in a zipped folder. The following code reads in the data and downloads it to the `data` folder of the working directory. This code **only needs to be run once**, so has now been made display-only.
@@ -52,6 +54,46 @@ While the data has been stored in the repository, it has not yet been read into 
 ```{r}
 abalone_data <- read_csv("data/abalone_data.csv")
 ```
+The next step is splitting the data, which is done using a 70/30 training/testing split.
+
+```{r}
+abalone_no_sex <- abalone_data |> select(-sex)
+
+abalone_split <- initial_split(abalone_no_sex, prop = 0.7, strata = rings)
+abalone_train <- training(abalone_split)
+abalone_test <- testing(abalone_split)
+```
+
+Now, preliminary analysis is run on the training data, and visualizations are created. These visualizations are useful for determining the best predictors for linear regression in the dataset.
+
+```{r}
+correlation_plot <- ggpairs(abalone_train) +
+  theme(text = element_text(size = 10))
+correlation_plot
+```
+*Figure 1: Correlation plot of the variables within the `abalone_train` dataset. The most relevant correlations are with the `rings` variable, which is the age of the abalone in years minus 1.5 years.*
+
+The correlation plot (Figure 1) shows that the relationship between the target variable, `rings`, with the other variables appears to be relatively linear. However, there are many correlations between the other variables, which are often stronger than the relationship between the target and predictor variables. Most notable are `whole_weight`, `shucked_weight`, `viscera_weight`, and `shell_weight`, which all have a correlation above 0.88 with each other. The best course of action to avoid problems with multicollinearity is to choose a single variable that has the best correlation with `rings`. This variable is `shell_weight`, and the other three weight variables will be removed going forward.
+
+The correlation between `diameter` and `length` is also quite high, at 0.987. `diameter` appears to correlate slightly better with `rings` than `length`, so `diameter` will be selected as a predictor. `height` will also be selected as a predictor.
+
+Therfore, the final predictors of the dataset are `shell_weight`, `diameter`, and `height`, while the response variable is `rings`.
+
+```{r}
+abalone_train_summ <- abalone_train |> 
+  select(rings, shell_weight, diameter, height) |> 
+  pivot_longer(cols = height:rings, names_to = "variable", values_to = "values") |> 
+  group_by(variable) |> 
+  summarize(mean = mean(values),
+            median = median(values),
+            variance = var(values),
+            minimum = min(values),
+            maximum = max(values))
+
+abalone_train_summ
+```
+*Table 1: Summary statistics for the predictor variables (`diameter`, `height`, and `shell_weight`), and the target variable `rings`.*
+
 
 
 
