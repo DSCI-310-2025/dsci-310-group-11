@@ -4,14 +4,28 @@ author: "Edward Sobczak"
 format: html
 ---
 
-## Title
+## Linear Regression of Abalone Age
 
 
 ## Summary
+Machine learning (ML) models provide a non-invasive alternative to traditional methods of estimating abalone age, which typically require shell sectioning and microscopic analysis. Using the UC Irvine Machine Learning Repository dataset, linear regression was applied to predict abalone age based on physical attributes. After exploratory data analysis, a linear regression model was built using shell weight, diameter, and height as predictors. The model showed moderate predictive power, with an R-squared value of 0.39 and a root mean squared prediction error of 2.5 years. While the model provides reasonable estimates, improvements could be made by exploring more complex ML approaches or additional predictive features.
 
 
 ## Introduction
+Determining the age of an abalone is crucial for marine biologists and fisheries management, as it helps assess population dynamics, growth rates, and the sustainability of harvesting practices. Traditionally, an abalone’s age is estimated by sectioning through its shell cone, staining the exposed surface, and counting the growth rings under a microscope. These rings form annually as the abalone matures, with space variations reflecting environmental factors such as food access and environmental temperature (Naylor 2015). However, this method can be invasive and labor-intensive. As a result, researchers have explored alternative techniques, such as using machine learning models. 
 
+Researchers have explored alternative techniques to address these challenges, including machine learning (ML) models. By analyzing physical measurements such as length and weight, ML algorithms can predict an abalone's age without invasive procedures. For instance, a study utilized various machine learning algorithms, including linear regression, logistic regression, K-Nearest Neighbors (KNN), Decision Tree, Random Forest, and Support Vector Machine (SVM), to predict abalone age based on these physical attributes. The comparative performances of each model were assessed using appropriate performance indicators such as precision, recall, or F1-score (Guney 2022).
+
+**Dataset Description**
+This dataset was sourced from the UC Irvine Machine Learning Repository and it was donated on November 11, 1995. It contains various physical and biological attributes of abalone including: 
+Sex (categorical): the biological sex of the abalone, represented as M (male), F (female), or I (infant)
+Length (continuous): the longest shell measurement, recorded in millimeters (mm)
+Diameter (continuous): the measurement perpendicular to the length, also in mm
+Height (continuous): the vertical height of the abalone with its meat still in the shell, measured in mm
+Whole weight (continuous): the total weight of the abalone, recorded in grams (g)
+Shucked weight (continuous): the weight of the abalone's meat after it has been removed from the shell, in g
+Viscera weight (continuous): the weight of the gut after bleeding, in g
+Shell weight (Continuous): The weight of the dried shell after removal, in g
 
 
 ## Methods and Results
@@ -203,3 +217,6 @@ weight_predict_plot
 
 
 ## References
+Guney, S. Pattern Recognition and Artificial Intelligence: 5th Mediterranean Conference, MedPRAI 2021, Istanbul, Turkey, December 17-18, 2021, Proceedings. Springer International Publishing, 2022, doi:10.1007/978-3-031-04112-9_25.
+
+Naylor, R. Literature Review of Abalone Ageing Techniques. Ministry for Primary Industries, 2015, www.mpi.govt.nz/dmsdocument/10583/direct.
