@@ -1,0 +1,11 @@
+services:
+  abalone-env:
+    image: alexhaddon/abalone_analysis
+    container_name: abalone_analysis
+    ports:
+      - "8787:8787"
+    volumes:
+      - .:/home/rstudio/abalone_analysis     # Mount everything...
+    environment:
+      - RENV_PATHS_ROOT=/home/rstudio/abalone_analysis    # set the renv root path
+      - DISABLE_AUTH=true
