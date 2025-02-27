@@ -47,3 +47,6 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# Unneeded Quarto file folder
+abalone_age_prediction_files/
