@@ -7,5 +7,5 @@ services:
     volumes:
       - .:/home/rstudio/abalone_analysis     # Mount everything...
     environment:
-      - RENV_PATHS_ROOT=/home/rstudio/abalone_analysis    # set the renv root path
+      - PASSWORD: "password"
       - DISABLE_AUTH=true
