@@ -7,5 +7,5 @@ services:
     volumes:
       - .:/home/rstudio/abalone_analysis     # Mount everything...
     environment:
-      - PASSWORD: "password"
-      - DISABLE_AUTH=true
+      PASSWORD: "password"
+      DISABLE_AUTH: true
