@@ -25,4 +25,4 @@ cd dsci-310-group-11
 - `rmarkdown`(2.29): for generating reports and documentation
 
 ## Licenses
-This project is licensed under the terms specified in `LICENSE.md`. Specifically, the `MIT License` and `Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)`. 
+This project is licensed under the terms specified in `LICENSE.md`. Specifically, the `MIT License` and `Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)` licenses. 
