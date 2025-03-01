@@ -7,10 +7,10 @@ name: Publish Docker image
 
 on:
   workflow_dispatch:
-  #push:
-    #paths:
-     #- 'Dockerfile'
-     #- .github/workflows/publish_docker_image.yml # or whatever you named the file
+  push:
+    paths:
+     - 'Dockerfile'
+     - .github/workflows/publish_docker_image.yml # or whatever you named the file
      #- 'conda-linux-64.lock'
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ttimbers/dsci522-dockerfile-practice # change to your image #TBD
+          images: alexhaddon/abalone_analysis
           tags: |
             type=raw, value={{sha}},enable=${{github.ref_type != 'tag' }}
             type=raw, value=latest

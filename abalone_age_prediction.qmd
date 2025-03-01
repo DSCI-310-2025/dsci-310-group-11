@@ -34,9 +34,10 @@ The first analysis step is to load necessary packages and set the working direct
 
 ```{r}
 setwd(getwd())
-library(tidyverse)
+library(ggplot2)
 library(tidymodels)
 library(GGally)
+library(readr)
 ```
 
 The second analysis read in the dataset from the internet. In our case, the Abalone dataset from the UCI Machine Learning Repository, and is stored in a zipped folder. The following code reads in the data and downloads it to the `data` folder of the working directory. This code **only needs to be run once**, so has now been made display-only.
@@ -71,7 +72,7 @@ abalone_data <- read_csv("data/abalone_data.csv")
 The abalone dataset has 9 variables, 8 of which are numerical, and one of which is characters. All of the numerical values (with the exception of rings) have been divided by 200 for scaling purposes, which we are reversing for interpretability.
 
 ```{r}
-abalone_data <- abalone |> 
+abalone_data <- abalone_data |> 
   mutate(length = length * 200,
          diameter = diameter * 200,
          height = height * 200,
