@@ -1,6 +1,6 @@
 services:
   abalone-env:
-    image: alexhaddon/abalone_analysis
+    image: alexhaddon/abalone_analysis:latest
     container_name: abalone_analysis
     ports:
       - "8787:8787"
