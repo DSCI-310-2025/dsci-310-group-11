@@ -16,6 +16,9 @@ Determining the age of an abalone is crucial for marine biologists and fisheries
 
 Researchers have explored alternative techniques to address these challenges, including machine learning (ML) models. By analyzing physical measurements such as length and weight, ML algorithms can predict an abalone's age without invasive procedures. For instance, a study utilized various machine learning algorithms, including linear regression, logistic regression, K-Nearest Neighbors (KNN), Decision Tree, Random Forest, and Support Vector Machine (SVM), to predict abalone age based on these physical attributes. The comparative performances of each model were assessed using appropriate performance indicators such as precision, recall, or F1-score (Guney 2022).
 
+## Research Question 
+Can abalone age be predicted and which features are most strongly correlated? 
+
 **Dataset Description**
 This dataset was sourced from the UC Irvine Machine Learning Repository and it was donated on November 11, 1995. It contains various physical and biological attributes of abalone including: 
 Sex (categorical): the biological sex of the abalone, represented as M (male), F (female), or I (infant)
@@ -40,7 +43,7 @@ library(GGally)
 library(readr)
 ```
 
-The second analysis read in the dataset from the internet. In our case, the Abalone dataset from the UCI Machine Learning Repository, and is stored in a zipped folder. The following code reads in the data and downloads it to the `data` folder of the working directory. This code **only needs to be run once**, so has now been made display-only.
+The second analysis step is to read in the dataset from the internet. In our case, the Abalone dataset from the UCI Machine Learning Repository, and is stored in a zipped folder. The following code reads in the data and downloads it to the `data` folder of the working directory. This code **only needs to be run once**, so has now been made display-only.
 
 ```r
 read_data <- function(file_path) {
@@ -127,7 +130,7 @@ The correlation plot (Figure 1) shows that the relationship between the target v
 
 The correlation between `diameter` and `length` is also quite high, at 0.987. `diameter` appears to correlate slightly better with `age` than `length`, so `diameter` will be selected as a predictor. `height` will also be selected as a predictor.
 
-Therfore, the final predictors of the dataset are `shell_weight`, `diameter`, and `height`, while the response variable is `age`.
+Therefore, the final predictors of the dataset are `shell_weight`, `diameter`, and `height`, while the response variable is `age`.
 
 ```{r}
 abalone_train_summ <- abalone_train |> 
@@ -196,7 +199,7 @@ metrics
 
 The prediction metrics for the model (Table 2) show that the model is okay at predicting age, but not fantastic. 
 An RMSPE of 2.5 means that the model on average predicts about 2.5 years away from the true age of the abalone. An R-squared value of 0.39 means that the model explains about 40% of the variance in the data, which is not a very good value, but not a very bad value either. 
-An MAE of 1.85 means that the model is on average predicts about 1.85 years away from the true age of the abalone. C
+An MAE of 1.85 means that the model on average predicts about 1.85 years away from the true age of the abalone. C
 onsidering that the age ranges from 2.5 years to 30.5 years (Table 1), this MAE is pretty good.
 
 The last step in our analysis is to visualize the results, which we have chosen to do using the shell_weight variable, as it has the highest coefficient in the linear model.
@@ -214,10 +217,22 @@ weight_predict_plot
 
 
 ## Discussion
+Essentially, using less costly, less invasive, and less complicated methods to determine abalone age is crucial for the industry and the environment because abalone age is positively correlated with economic value (Misman 2019). Additionally abalone growth rates are variable in aquaculture which makes production difficult and inconsistent (Kho 2023). Machine learning can be used to advance this industry and help protect abalone populations with non invasive measurements. Other machine learning methods such as Artificial Neural Networks (Misman 2019) have been used to predict abalone age which could be a future step in advancing our model. 
 
+With our current model we found that the shell weight, diameter and height, were the traits that are most highly correlated with abalone age which is expected. Logically weight and size usually increases with age for species. Using linear regression and these variables in our data set a model was trained and tested showing that every increase in 1 mm in height is associated with an increase in 0.04 years which is about 14 days. We found that perhaps our model is misinterpreting the diameter variable since in the model it is negatively correlated with age but in the preliminary analysis it is positive. The calculated prediction metrics showed that our model on average predicts age 1.85-2.5 years off from the actual age according to the RMSPE and MAE. We consider these values acceptable seeing that the ages in the data range from 2.5 to 20.5 years. The estimated age that abalone are harvested at ranges based on region. It is usually after 4 years old ranging to 8 years old, therefore we can conclude that our model's average error is acceptable and the age can be used to determine price (DFO 2008 & Hossain 2019). 
+
+The use of  machine learning to predict abalone age could be the future for the abalone industry. The future of this research is finding a machine learning model that can be used globally to revolutionize how we determine the age of abalone. There could also be different models developed for wild abalone vs those grown using aquaculture methods for harvesting. Finally, going beyond the abalone industry perhaps there are other mollusc industries that could benefit from similar processes to predict age for harvest. 
 
 
 ## References
+DFO, 2008. Northern Abalone. DFO Science Stock Status Report 2004/053. 
+
+Hossain, Md. Mobarak and Chowdhury, Md Niaz Murshed. Econometric Ways to Estimate the Age and Price of Abalone,  Department of Economics, University of Nevada, Reno, 2019.
+
 Guney, S. Pattern Recognition and Artificial Intelligence: 5th Mediterranean Conference, MedPRAI 2021, Istanbul, Turkey, December 17-18, 2021, Proceedings. Springer International Publishing, 2022, doi:10.1007/978-3-031-04112-9_25.
+
+Kho, Kang Hee, et al. Age-dependent growth-related QTL variations in Pacific abalone, Haliotis discus hannai, International Journal of Molecular Sciences, vol. 24, no. 17, 29 Aug. 2023, p. 13388, https://doi.org/10.3390/ijms241713388. 
+
+Misman, Muhammad Faiz, et al. Prediction of abalone age using regression-based neural network, 2019 1st International Conference on Artificial Intelligence and Data Sciences (AiDAS), Sept. 2019, pp. 23–28, https://doi.org/10.1109/aidas47888.2019.8970983. 
 
 Naylor, R. Literature Review of Abalone Ageing Techniques. Ministry for Primary Industries, 2015, www.mpi.govt.nz/dmsdocument/10583/direct.
