@@ -9,3 +9,7 @@ services:
     environment:
       PASSWORD: "password"
       DISABLE_AUTH: true
+    build:
+      platforms:
+        - "linux/arm64"
+        - "linux/amd64"
