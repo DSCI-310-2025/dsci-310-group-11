@@ -5,7 +5,9 @@
   - `Alex Haddon, Maxine Paredes, Edward Sobczak, Emma Wolfe`
 
 ## Project Summary
-This project analyzes the Abalone dataset from the UCI Machine Learning Repository to predict the age of abalones based on physical characteristics. The analysis involves data preprocessing, exploratory data analysis, and building a linear regression model using the `tidymodels` framework.
+The goal of this project is to apply machine learning (ML) techniques to predict the age of abalone based on its physical attributes such as shell weight, diameter, and height. Traditional methods for determining abalone age involve invasive procedures like shell sectioning, which can be labor-intensive. By leveraging the UC Irvine Machine Learning Repository’s dataset, linear regression was used to develop a predictive model for abalone age, which is vital for fisheries management and sustainability efforts.
+
+The project focuses on using non-invasive measurements to estimate abalone age, potentially offering a faster and more accessible alternative to traditional methods. Through the application of linear regression, the study explores how physical features of abalone, such as shell weight and diameter, correlate with age, aiming to improve predictive accuracy and contribute to more sustainable management of abalone populations.
 
 ## How to Run the Analysis
 ---
