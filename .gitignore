@@ -54,3 +54,7 @@ abalone_age_prediction_files/
 # generated images folder, EXCEPT for the .gitkeep
 output/images/
 !output/images/.gitkeep
+
+# raw data folder except for the .gitkeep
+data/raw/
+!data/raw/.gitkeep
