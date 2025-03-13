@@ -26,5 +26,5 @@ unlink(temp)
 write_csv(data_file, file = opt$output_path)
 
 
-# command to run: Rscript 01-read_data.R --url="https://archive.ics.uci.edu/static/public/1/abalone.zip" --output_path=../data/raw/abalone_data.csv
+# command to run: Rscript 01-read_data.R --url="https://archive.ics.uci.edu/static/public/1/abalone.zip" --output_path=data/raw/abalone_data.csv
 
