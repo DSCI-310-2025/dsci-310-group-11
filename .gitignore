@@ -66,3 +66,6 @@ data/clean/*
 # output table folder except for the gitkeep
 output/tables/*
 !output/tables/.gitkeep
+
+# Rplots pdf
+Rplots.pdf
