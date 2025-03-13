@@ -61,7 +61,7 @@ data/raw/*
 
 # clean data folder except for the .gitkeep
 data/clean/*
-!data/raw/.gitkeep
+!data/clean/.gitkeep
 
 # output tables folder except for gitkeep
 output/tables/*
