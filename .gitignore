@@ -56,5 +56,9 @@ output/images/
 !output/images/.gitkeep
 
 # raw data folder except for the .gitkeep
-data/raw/
+data/raw/*
+!data/raw/.gitkeep
+
+# clean data folder except for the .gitkeep
+data/clean/*
 !data/raw/.gitkeep
