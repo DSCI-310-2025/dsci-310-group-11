@@ -1,15 +1,15 @@
 library(docopt)
-library(ggplot2)
 library(GGally)
+library(readr)
+library(tidymodels)
 
 "this script conducts the exploratory data analysis on the abalone dataset
 includes preliminary analysis, summary statistics for the predictor variables 
 the target variable `rings`, and a histogram of the age of abalones 
-Usage: Rscript 03-eda.R --file_path=<file_path>  --output_path1=<output_path1> --output_path2=<output_path2> --output_path3=<output_path3> 
-
+Usage: 03-eda.R --file_path=<file_path> --output_path1=<output_path1> --output_path2=<output_path2> --output_path3=<output_path3> 
 " -> doc
 
-opt <- doc(opt)
+opt <- docopt(doc)
 
 abalone_train <- read_csv(opt$file_path)
 
@@ -38,7 +38,8 @@ age_histogram <- abalone_train |>
 age_histogram
 
 ggsave(correlation_plot, file = opt$output_path1)
-ggsave(abalone_train_summ, file = opt$output_path2)
+write_csv(abalone_train_summ, file = opt$output_path2)
 ggsave(age_histogram, file = opt$output_path3)
 
-# command to run; Rscript 03-eda.R --file_path=data/clean/abalone_train.csv  --output_path1=<output/correlation_plot.png --output_path2=<output/abalone_train_summ.png --output_path3=<output/age_histogram.png>
+# command to run; Rscript scripts/03-eda.R --file_path=data/clean/abalone_train.csv --output_path1=output/images/correlation_plot.png --output_path2=output/tables/abalone_train_summ.csv --output_path3=output/images/age_histogram.png
+print("eda completed!")

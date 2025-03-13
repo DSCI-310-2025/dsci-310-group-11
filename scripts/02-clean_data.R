@@ -46,5 +46,4 @@ write_csv(abalone_train, opt$output_train_path)
 write_csv(abalone_test, opt$output_test_path)
 
 print("finished cleaning and splitting the data")
-
 # command to run: Rscript scripts/02-clean_data.R --file_path=data/raw/abalone_data.csv --output_train_path=data/clean/abalone_train.csv --output_test_path=data/clean/abalone_test.csv
