@@ -37,10 +37,10 @@ The first analysis step is to load necessary packages and set the working direct
 
 ```{r}
 setwd(getwd())
-library(ggplot2)
 library(tidymodels)
 library(GGally)
 library(readr)
+library(rmarkdown)
 ```
 
 The second analysis step is to read in the dataset from the internet. In our case, the Abalone dataset from the UCI Machine Learning Repository, and is stored in a zipped folder. The following code reads in the data and downloads it to the `data` folder of the working directory. This code **only needs to be run once**, so has now been made display-only.
