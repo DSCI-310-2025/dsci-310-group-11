@@ -19,11 +19,11 @@ data/clean/abalone_train.csv data/clean/abalone_test.csv: scripts/02-clean_data.
 output/images/correlation_plot.png output/tables/abalone_train_summ.csv output/images/age_histogram.png: scripts/03-eda.R data/clean/abalone_train.csv
 	Rscript scripts/03-eda.R --file_path=data/clean/abalone_train.csv --output_path1=output/images/correlation_plot.png --output_path2=output/tables/abalone_train_summ.csv --output_path3=output/images/age_histogram.png
 
-output/tables/coefs.csv output/tables/metrics.csv output/images/abalone_predicted.png: scripts/04-model.R data/clean/abalone_train.csv data/clean/abalone_test.csv
-	Rscript scripts/04-model.R --train_path=data/clean/abalone_train.csv --test_path=data/clean/abalone_test.csv --output_path1=output/tables/coefs.csv --output_path2=output/tables/metrics.csv --output_path3=output/images/abalone_predicted.png
+output/tables/coefs.csv output/tables/metrics.csv output/images/abalone_predicted.png: scripts/04-modeling.R data/clean/abalone_train.csv data/clean/abalone_test.csv
+	Rscript scripts/04-modeling.R --train_path=data/clean/abalone_train.csv --test_path=data/clean/abalone_test.csv --coefs_path=output/tables/coefs.csv --metrics_path=output/tables/metrics.csv --viz_path=output/images/abalone_predicted.png
 
-index.html: report/report.qmd
-	quarto render report/report.qmd
+index.html: report/abalone_age_prediction.qmd
+	quarto render report/abalone_age_prediction.qmd
 	mv report/report.html index.html
 
 report:
