@@ -24,7 +24,7 @@ output/tables/coefs.csv output/tables/metrics.csv output/images/abalone_predicte
 
 index.html: report/abalone_age_prediction.qmd
 	quarto render report/abalone_age_prediction.qmd
-	mv report/report.html index.html
+	mv report/abalone_age_prediction.html index.html
 
 report:
 	make index.html
