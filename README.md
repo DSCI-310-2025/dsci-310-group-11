@@ -20,7 +20,7 @@ git clone https://github.com/DSCI-310-2025/dsci-310-group-11.git
 ### 2. Navigate to the Project Directory
 In your terminal changing your working directory to the newly cloned repository:
 ```sh
-cd abalone_analysis
+cd dsci-310-group-11
 ```
 
 ### 3. Start the Container
@@ -36,13 +36,21 @@ http://localhost:8787
 ```
 The password is disabled in the docker-compose.yml file so you will be able to directly access RStudio. 
 
+
 ### 5. Open the Abalone Age Prediction File
+- Navigate to the RStudio terminal and change your working directory to the cloned repository 
+```sh
+cd abalone_analysis
+```
 - In RStudio, go to the Files pane (bottom right).
 - Navigate to /home/rstudio/abalone_analysis.
 - Click on abalone_age_prediction.qmd to open the file.
 
 ### 6. Run the Analysis
-- In RStudio, click Render to run the entire .qmd file.
+- In the RStudio terminal, type make all to run the entire .qmd file.
+```sh
+make all
+```
 - Alternatively, you can run each chunk manually in the R console, if needed.
   
 ### 7. Shut Down the Container (Optional)
