@@ -1,89 +1,58 @@
 ---
 title: "Abalone Age Prediction"
-author: "Edward Sobczak"
-format: html
+author: "Alex Haddon, Maxine Paredes, Edward Sobczak, and Emma Wolfe"
+format: 
+  html: 
+    toc: true 
+    toc-title: Contents
+    embed-resources: true
+bibliography: references.bib
+editor: source
+echo: false
 ---
 
-## Linear Regression of Abalone Age
-
-
 ## Summary
-Machine learning (ML) models provide a non-invasive alternative to traditional methods of estimating abalone age, which typically require shell sectioning and microscopic analysis. Using the UC Irvine Machine Learning Repository dataset, linear regression was applied to predict abalone age based on physical attributes. After exploratory data analysis, a linear regression model was built using shell weight, diameter, and height as predictors. The model showed moderate predictive power, with an R-squared value of 0.39 and a root mean squared prediction error of 2.5 years. While the model provides reasonable estimates, improvements could be made by exploring more complex ML approaches or additional predictive features.
+Machine learning (ML) models provide a non-invasive alternative to traditional methods of estimating abalone age, which typically require shell sectioning and microscopic analysis. Using the UC Irvine Machine Learning Repository dataset [@DFO2008], linear regression was applied to predict abalone age based on physical attributes. 
+After exploratory data analysis, a linear regression model was built using shell weight, diameter, and height as predictors. 
+While the model showed moderate predictive power, improvements could be made by exploring more complex ML approaches or additional predictive features.
 
 
 ## Introduction
-Determining the age of an abalone is crucial for marine biologists and fisheries management, as it helps assess population dynamics, growth rates, and the sustainability of harvesting practices. Traditionally, an abalone’s age is estimated by sectioning through its shell cone, staining the exposed surface, and counting the growth rings under a microscope. These rings form annually as the abalone matures, with space variations reflecting environmental factors such as food access and environmental temperature (Naylor 2015). However, this method can be invasive and labor-intensive. As a result, researchers have explored alternative techniques, such as using machine learning models. 
+Determining the age of an abalone is crucial for marine biologists and fisheries management, as it helps assess population dynamics, growth rates, and the sustainability of harvesting practices. 
+Traditionally, an abalone’s age is estimated by sectioning through its shell cone, staining the exposed surface, and counting the growth rings under a microscope. 
+These rings form annually as the abalone matures, with space variations reflecting environmental factors such as food access and environmental temperature [@Naylor2015]. However, this method can be invasive and labor-intensive. 
+As a result, researchers have explored alternative techniques, such as using machine learning models. 
 
-Researchers have explored alternative techniques to address these challenges, including machine learning (ML) models. By analyzing physical measurements such as length and weight, ML algorithms can predict an abalone's age without invasive procedures. For instance, a study utilized various machine learning algorithms, including linear regression, logistic regression, K-Nearest Neighbors (KNN), Decision Tree, Random Forest, and Support Vector Machine (SVM), to predict abalone age based on these physical attributes. The comparative performances of each model were assessed using appropriate performance indicators such as precision, recall, or F1-score (Guney 2022).
+Researchers have explored alternative techniques to address these challenges, including machine learning (ML) models. 
+By analyzing physical measurements such as length and weight, ML algorithms can predict an abalone's age without invasive procedures. 
+For instance, a study utilized various machine learning algorithms, including linear regression, logistic regression, K-Nearest Neighbors (KNN), Decision Tree, Random Forest, and Support Vector Machine (SVM), to predict abalone age based on these physical attributes. The comparative performances of each model were assessed using appropriate performance indicators such as precision, recall, or F1-score [@Guney2022].
 
 ## Research Question 
 Can abalone age be predicted and which features are most strongly correlated? 
 
-**Dataset Description**
-This dataset was sourced from the UC Irvine Machine Learning Repository and it was donated on November 11, 1995. It contains various physical and biological attributes of abalone including: 
-Sex (categorical): the biological sex of the abalone, represented as M (male), F (female), or I (infant)
-Length (continuous): the longest shell measurement, recorded in millimeters (mm)
-Diameter (continuous): the measurement perpendicular to the length, also in mm
-Height (continuous): the vertical height of the abalone with its meat still in the shell, measured in mm
-Whole weight (continuous): the total weight of the abalone, recorded in grams (g)
-Shucked weight (continuous): the weight of the abalone's meat after it has been removed from the shell, in g
-Viscera weight (continuous): the weight of the gut after bleeding, in g
-Shell weight (Continuous): The weight of the dried shell after removal, in g
+**Dataset Description:**
+This dataset was sourced from the UC Irvine Machine Learning Repository and it was donated on November 11, 1995. It contains various physical and biological attributes of abalone including abalone sex, length, diameter, height, whole weight, shucked weight, viscera weight, and shell weight, along with the age of the abalone.
 
 
 ## Methods and Results
 
-The first analysis step is to load necessary packages and set the working directory.
+The R programming language [@R] 
+and the following R packages were used to perform the analysis: 
+knitr [@knitr], GGally [@GGally], readr [@readr], rmarkdown [@rmarkdown], tidymodels [@tidymodels], and Quarto [@Allaire_Quarto_2022]. 
 
 ```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
 setwd(getwd())
 library(tidymodels)
 library(GGally)
 library(readr)
 library(rmarkdown)
+library(knitr)
 ```
-
-The second analysis step is to read in the dataset from the internet. In our case, the Abalone dataset from the UCI Machine Learning Repository, and is stored in a zipped folder. The following code reads in the data and downloads it to the `data` folder of the working directory. This code **only needs to be run once**, so has now been made display-only.
-
-```r
-read_data <- function(file_path) {
-  temp <- tempfile()
-  zipped <- download.file(url = file_path, destfile = temp)
-  file <- unz(temp, "abalone.data")
-  abalone_data <- read_csv(file, col_names = c("sex", 
-                                               "length", 
-                                               "diameter", 
-                                               "height", 
-                                               "whole_weight", 
-                                               "shucked_weight", 
-                                               "viscera_weight", 
-                                               "shell_weight", 
-                                               "rings"))
-  
-  unlink(temp)
-  
-  write_csv(abalone_data, file = "data/abalone_data.csv")
-}
-
-read_data("https://archive.ics.uci.edu/static/public/1/abalone.zip")
-```
-While the data has been stored in the repository, it has not yet been read into R. The following code reads the data into R.
-
-```{r}
-abalone_data <- read_csv("data/abalone_data.csv")
-```
-The abalone dataset has 9 variables, 8 of which are numerical, and one of which is characters. All of the numerical values (with the exception of rings) have been divided by 200 for scaling purposes, which we are reversing for interpretability.
-
-```{r}
-abalone_data <- abalone_data |> 
-  mutate(length = length * 200,
-         diameter = diameter * 200,
-         height = height * 200,
-         whole_weight = whole_weight * 200,
-         shucked_weight = shucked_weight * 200,
-         viscera_weight = viscera_weight * 200,
-         shell_weight = shell_weight * 200)
-```
+The abalone dataset has 9 variables, 8 of which are numerical, and one of which is character. All of the numerical values (with the exception of rings) have been divided by 200 for scaling purposes, which we are reversing for interpretability.
 
 The variables are as follows:
 
@@ -99,140 +68,109 @@ The variables are as follows:
 
 Since the `rings` variable gives the age minus 1.5 years, we are creating an age variable that will be our target variable for analysis.
 
-```{r}
-abalone_data <- abalone_data |> 
-  mutate(age = rings + 1.5)
-```
+The final cleaning step is splitting the data, which is done using a 70/30 training/testing split. 
+`sex` is removed as a variable because it is not numeric, and its categorical nature makes it more difficult to transform into a numeric variable. `rings` is also removed because we now have the more appropriate age variable.
 
-The next step is splitting the data, which is done using a 70/30 training/testing split. 
-`sex` is removed as a variable because it is not numeric, and its categorical nature makes it more difficult to transform into a numeric variable. 
-`rings` is also removed because we now have the more appropriate age variable.
-
-```{r}
-abalone_no_sex <- abalone_data |> select(-sex, -rings)
-
-set.seed(1234)
-abalone_split <- initial_split(abalone_no_sex, prop = 0.7, strata = age)
-abalone_train <- training(abalone_split)
-abalone_test <- testing(abalone_split)
-```
+## Exploratory Data Analysis
 
 Now, preliminary analysis is run on the training data, and visualizations are created. These visualizations are useful for determining the best predictors for linear regression in the dataset.
 
-```{r}
-correlation_plot <- ggpairs(abalone_train) +
-  theme(text = element_text(size = 10))
-correlation_plot
-```
-*Figure 1: Correlation plot of the variables within the `abalone_train` dataset. The most relevant correlations are with the `rings` variable, which is the age of the abalone in years minus 1.5 years.*
+![Correlation plot of the variables within the `abalone_train` dataset. The most relevant correlations are with the `rings` variable, which is the age of the abalone in years minus 1.5 years.](../output/images/correlation_plot.png){#fig-correlationplot}
 
-The correlation plot (Figure 1) shows that the relationship between the target variable, `rings`, with the other variables appears to be relatively linear. However, there are many correlations between the other variables, which are often stronger than the relationship between the target and predictor variables. Most notable are `whole_weight`, `shucked_weight`, `viscera_weight`, and `shell_weight`, which all have a correlation above 0.88 with each other. The best course of action to avoid problems with multicollinearity is to choose a single variable that has the best correlation with `age`. This variable is `shell_weight`, and the other three weight variables will be removed going forward.
+@fig-correlationplot shows that the relationship between the target variable, `rings`, with the other variables appears to be relatively linear. However, there are many correlations between the other variables, which are often stronger than the relationship between the target and predictor variables. Most notable are `whole_weight`, `shucked_weight`, `viscera_weight`, and `shell_weight`, which all have a high correlation with each other. The best course of action to avoid problems with multicollinearity is to choose a single variable that has the best correlation with `age`. This variable is `shell_weight`, and the other three weight variables will be removed going forward.
 
-The correlation between `diameter` and `length` is also quite high, at 0.987. `diameter` appears to correlate slightly better with `age` than `length`, so `diameter` will be selected as a predictor. `height` will also be selected as a predictor.
+The correlation between `diameter` and `length` is also quite high. `diameter` appears to correlate slightly better with `age` than `length`, so `diameter` will be selected as a predictor. `height` will also be selected as a predictor.
 
 Therefore, the final predictors of the dataset are `shell_weight`, `diameter`, and `height`, while the response variable is `age`.
 
 ```{r}
-abalone_train_summ <- abalone_train |> 
-  select(age, shell_weight, diameter, height) |> 
-  pivot_longer(cols = height:age, names_to = "variable", values_to = "values") |> 
-  group_by(variable) |> 
-  summarize(mean = mean(values),
-            median = median(values),
-            variance = var(values),
-            minimum = min(values),
-            maximum = max(values))
+#| label: tbl-abalonetrainsummary
+#| tbl-cap: "Summary statistics for the predictor variables (`diameter`, `height`, and `shell_weight`), and the target variable `rings`."
+#| echo: false
+#| message: false
+#| warning: false
 
-abalone_train_summ
+abalone_train_summ <- read_csv("../output/tables/abalone_train_summ.csv")
+median_shell_diam <- abalone_train_summ$median[2]
+median_shell_height <- abalone_train_summ$median[3]
+median_shell_weight <- abalone_train_summ$median[4]
+max_shell_diam <- abalone_train_summ$maximum[2]
+max_shell_height <- abalone_train_summ$maximum[3]
+min_age <- abalone_train_summ$minimum[1]
+max_age <- abalone_train_summ$maximum[1]
+median_age <- abalone_train_summ$median[1]
+
+knitr::kable(abalone_train_summ)
 ```
-*Table 1: Summary statistics for the predictor variables (`diameter`, `height`, and `shell_weight`), and the target variable `rings`.*
 
-The summary statistics (Table 1) show that the median value of shell diameter is 84 millimeters, while the median shell height is 28 millimeters. The median shell weight is 46 grams. Shell diameter has a smaller range with a smaller maximum (130 mm), while shell height has a larger maximum at 226 mm, which is unexpected. The minimum abalone age in the dataset is 2.5 years old, while the oldest abalone is 30.5 years old. The median age of an abalone in the dataset is 10.5 years old.
+
+The summary statistics @tbl-abalonetrainsummary show that the median value of shell diameter is `{r} median_shell_diam` millimeters, while the median shell height is `{r} median_shell_height` millimeters. The median shell weight is `{r} median_shell_weight` grams. Shell diameter has a smaller range with a smaller maximum (`{r} max_shell_diam` mm), while shell height has a larger maximum at `{r} max_shell_height` mm, which is unexpected. The minimum abalone age in the dataset is `{r} min_age` years old, while the oldest abalone is `{r} max_age` years old. The median age of an abalone in the dataset is `{r} median_age` years old.
+
+![Histogram of the age of abalones in the training data. The peak is around 10 years of age and the curve is slightly right-skewed.](../output/images/age_histogram.png){#fig-histogramplot}
+
+Now that we have an idea of what the training data looks like, we can build our linear regression model. We will do so using the `linear_reg()` function from the `tidymodels` package.
 
 ```{r}
-age_histogram <- abalone_train |> 
-  ggplot(aes(x = age)) +
-  geom_histogram(binwidth = 2) + 
-  labs(x = "Age (years)", y = "Count", title = "Abalone Training Data Age Distribution")
+#| echo: false
+#| message: false
+#| warning: false
 
-age_histogram
-```
-*Figure 2: Histogram of the age of abalones in the training data. The peak is around 10 years of age and the curve is slightly right-skewed.*
-
-Now that we have an idea of what the training data looks like, we can build our linear regression model. We will do so using the `linear_reg()` function from the tidymodels package.
-
-```{r}
-set.seed(1234)
-
-spec <- linear_reg() |> 
-  set_engine("lm") |> 
-  set_mode("regression")
-
-recipe <- recipe(age ~ diameter + height + shell_weight, data = abalone_train)
-
-fit <- workflow() |> 
-  add_recipe(recipe) |> 
-  add_model(spec) |> 
-  fit(data = abalone_train)
-
-fit
+coefs <- read_csv("../output/tables/coefs.csv")
+intercept <- round(coefs$estimate[1], digits = 6)
+diam_coef <- round(coefs$estimate[2], digits = 6)
+height_coef <- round(coefs$estimate[3], digits = 6)
+weight_coef <- round(coefs$estimate[4], digits = 6)
 ```
 
 The linear regression model provides an equation for predicting the shell weight of an abalone.
 The equation is as follows:
 
-$$rate =7.616072−(0.006345∗diameter)+(0.041252∗height)+(0.066611∗shell\_weight)$$
-This equation means that for every 1 mm increase in height, the age of the abalone increases by 0.04 years (about 14 days). 
+age = `{r} intercept` + (`{r} diam_coef` * diameter) + (`{r} height_coef` * height) + (`{r} weight_coef` * shell_weight)
+
+This equation means that for every 1 mm increase in height, the age of the abalone increases by `{r} round(height_coef, digits=2)` years (about `{r} round((height_coef*365))` days). 
 Based on this model, diameter appears to be negatively correlated with the age of the abalone. 
-We can tell from Figure 1 that diameter is actually positively correlated with the age of abalone (though not very strongly), so the model may be misinterpreting this variable.
+We can tell from @fig-correlationplot that diameter is actually positively correlated with the age of abalone (though not very strongly), so the model may be misinterpreting this variable.
 
 Our last step is to predict the testing data and examine the RMSPE and R-squared value of the model.
 
 ```{r}
-abalone_predicted <- predict(fit, abalone_test) |> 
-  bind_cols(abalone_test)
+#| label: tbl-metricssummary
+#| tbl-cap: "Prediction metrics for the linear regression model. `rmse` means Root Mean Squared Prediction Error, `rsq` means R-squared value, and `mae` means Mean Absolute Error."
+#| echo: false
+#| message: false
+#| warning: false
 
-metrics <- metrics(abalone_predicted, truth = age, estimate = .pred)
-metrics
+metrics <- read_csv("../output/tables/metrics.csv")
+rmse <- round(metrics$.estimate[1], digits = 1)
+rsq <- round(metrics$.estimate[2], digits = 2)
+rsq_percent <- round(metrics$.estimate[2])
+mae <- round(metrics$.estimate[3], digits = 2)
+
+
+knitr::kable(abalone_train_summ)
 ```
-*Table 2: Prediction metrics for the linear regression model. `rmse` means Root Mean Squared Prediction Error, `rsq` means R-squared value, and `mae` means Mean Absolute Error.*
 
-The prediction metrics for the model (Table 2) show that the model is okay at predicting age, but not fantastic. 
-An RMSPE of 2.5 means that the model on average predicts about 2.5 years away from the true age of the abalone. An R-squared value of 0.39 means that the model explains about 40% of the variance in the data, which is not a very good value, but not a very bad value either. 
-An MAE of 1.85 means that the model on average predicts about 1.85 years away from the true age of the abalone. C
-onsidering that the age ranges from 2.5 years to 30.5 years (Table 1), this MAE is pretty good.
+The prediction metrics for the model @tbl-metricssummary show that the model is okay at predicting age, but not fantastic. 
+An RMSE of `{r} rmse` means that the model on average predicts about `{r} rmse` years away from the true age of the abalone. An R-squared value of `{r} rsq` means that the model explains about `{r} rsq_percent`% of the variance in the data, which is not a very good value, but not a very bad value either. 
+An MAE of `{r} mae` means that the model on average predicts about `{r} mae` years away from the true age of the abalone. Considering that from @tbl-abalonetrainsummary the age ranges from `{r} min_age` years to `{r} max_age` years, this MAE is pretty good.
 
 The last step in our analysis is to visualize the results, which we have chosen to do using the shell_weight variable, as it has the highest coefficient in the linear model.
 
 ```{r}
-weight_predict_plot <- abalone_predicted |> 
-  ggplot(aes(x = shell_weight)) +
-  geom_point(aes(y = age), alpha = 0.3) +
-  geom_line(aes(y = .pred), color = "skyblue", linewidth = 0.75) +
-  labs(x = "Shell Weight (grams)", y = "Age (years)", title = "Abalone Age vs Shell Weight")
+#| label: fig-abalonepredictedplot
+#| fig-cap: "Graph of abalone age (y axis) vs shell weight in grams (x axis). The true ages are plotted as transparent black points, while the predicted ages are plotted as a blue line. While this is a linear model, the line is not perfectly straight as there are other variables influencing the age."
+#| fig-width: 6
+#| fig-height: 4
 
-weight_predict_plot
+knitr::include_graphics("../output/images/abalone_predicted.png")
 ```
-*Figure 3: Graph of abalone age (y axis) vs shell weight in grams (x axis). The true ages are plotted as transparent black points, while the predicted ages are plotted as a blue line. While this is a linear model, the line is not perfectly straight as there are other variables influencing the age *
-
 
 ## Discussion
-Essentially, using less costly, less invasive, and less complicated methods to determine abalone age is crucial for the industry and the environment because abalone age is positively correlated with economic value (Misman 2019). Additionally abalone growth rates are variable in aquaculture which makes production difficult and inconsistent (Kho 2023). Machine learning can be used to advance this industry and help protect abalone populations with non invasive measurements. Other machine learning methods such as Artificial Neural Networks (Misman 2019) have been used to predict abalone age which could be a future step in advancing our model. 
+Essentially, using less costly, less invasive, and less complicated methods to determine abalone age is crucial for the industry and the environment because abalone age is positively correlated with economic value [@Misman2019]. Additionally abalone growth rates are variable in aquaculture which makes production difficult and inconsistent [@Kho2023]. Machine learning can be used to advance this industry and help protect abalone populations with non invasive measurements. Other machine learning methods such as Artificial Neural Networks [@Misman2019] have been used to predict abalone age which could be a future step in advancing our model. 
 
-With our current model we found that the shell weight, diameter and height, were the traits that are most highly correlated with abalone age which is expected. Logically weight and size usually increases with age for species. Using linear regression and these variables in our data set a model was trained and tested showing that every increase in 1 mm in height is associated with an increase in 0.04 years which is about 14 days. We found that perhaps our model is misinterpreting the diameter variable since in the model it is negatively correlated with age but in the preliminary analysis it is positive. The calculated prediction metrics showed that our model on average predicts age 1.85-2.5 years off from the actual age according to the RMSPE and MAE. We consider these values acceptable seeing that the ages in the data range from 2.5 to 20.5 years. The estimated age that abalone are harvested at ranges based on region. It is usually after 4 years old ranging to 8 years old, therefore we can conclude that our model's average error is acceptable and the age can be used to determine price (DFO 2008 & Hossain 2019). 
+With our current model we found that the shell weight, diameter and height, were the traits that are most highly correlated with abalone age which is expected. Logically weight and size usually increases with age for species. Using linear regression and these variables in our data set a model was trained and tested showing that every increase in 1 mm in height is associated with an increase in `{r} round(height_coef, digits=2)` years or about `{r} round((365/height_coef))` days. We found that perhaps our model is misinterpreting the diameter variable since in the model it is negatively correlated with age but in the preliminary analysis it is positive. The calculated prediction metrics showed that our model on average predicts age `{r} mae`-`{r} rmse` years off from the actual age according to the RMSE and MAE. We consider these values acceptable seeing that the ages in the data range from `{r} min_age` to `{r} max_age` years. The estimated age that abalone are harvested at ranges based on region. It is usually after 4 years old ranging to 8 years old, therefore we can conclude that our model's average error is acceptable and the age can be used to determine price [@DFO2008; @HossainChowdhury2019]. 
 
 The use of  machine learning to predict abalone age could be the future for the abalone industry. The future of this research is finding a machine learning model that can be used globally to revolutionize how we determine the age of abalone. There could also be different models developed for wild abalone vs those grown using aquaculture methods for harvesting. Finally, going beyond the abalone industry perhaps there are other mollusc industries that could benefit from similar processes to predict age for harvest. 
 
 
 ## References
-DFO, 2008. Northern Abalone. DFO Science Stock Status Report 2004/053. 
-
-Hossain, Md. Mobarak and Chowdhury, Md Niaz Murshed. Econometric Ways to Estimate the Age and Price of Abalone,  Department of Economics, University of Nevada, Reno, 2019.
-
-Guney, S. Pattern Recognition and Artificial Intelligence: 5th Mediterranean Conference, MedPRAI 2021, Istanbul, Turkey, December 17-18, 2021, Proceedings. Springer International Publishing, 2022, doi:10.1007/978-3-031-04112-9_25.
-
-Kho, Kang Hee, et al. Age-dependent growth-related QTL variations in Pacific abalone, Haliotis discus hannai, International Journal of Molecular Sciences, vol. 24, no. 17, 29 Aug. 2023, p. 13388, https://doi.org/10.3390/ijms241713388. 
-
-Misman, Muhammad Faiz, et al. Prediction of abalone age using regression-based neural network, 2019 1st International Conference on Artificial Intelligence and Data Sciences (AiDAS), Sept. 2019, pp. 23–28, https://doi.org/10.1109/aidas47888.2019.8970983. 
-
-Naylor, R. Literature Review of Abalone Ageing Techniques. Ministry for Primary Industries, 2015, www.mpi.govt.nz/dmsdocument/10583/direct.

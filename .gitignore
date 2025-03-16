@@ -39,9 +39,6 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# pkgdown site
-docs/
-
 # translation temp files
 po/*~
 
@@ -69,3 +66,6 @@ output/tables/*
 
 # Rplots pdf
 Rplots.pdf
+
+# rendered html file
+report/abalone_age_prediction.html
