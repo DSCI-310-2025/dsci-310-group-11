@@ -14,8 +14,7 @@ echo: false
 ## Summary
 Machine learning (ML) models provide a non-invasive alternative to traditional methods of estimating abalone age, which typically require shell sectioning and microscopic analysis. Using the UC Irvine Machine Learning Repository dataset [@DFO2008], linear regression was applied to predict abalone age based on physical attributes. 
 After exploratory data analysis, a linear regression model was built using shell weight, diameter, and height as predictors. 
-The model showed moderate predictive power, with an R-squared value of 0.39 and a root mean squared prediction error (RMSPE) of 2.5 years. 
-While the model provides reasonable estimates, improvements could be made by exploring more complex ML approaches or additional predictive features.
+While the model showed moderate predictive power, improvements could be made by exploring more complex ML approaches or additional predictive features.
 
 
 ## Introduction
@@ -31,7 +30,7 @@ For instance, a study utilized various machine learning algorithms, including li
 ## Research Question 
 Can abalone age be predicted and which features are most strongly correlated? 
 
-**Dataset Description**
+**Dataset Description:**
 This dataset was sourced from the UC Irvine Machine Learning Repository and it was donated on November 11, 1995. It contains various physical and biological attributes of abalone including abalone sex, length, diameter, height, whole weight, shucked weight, viscera weight, and shell weight, along with the age of the abalone.
 
 
@@ -78,9 +77,9 @@ Now, preliminary analysis is run on the training data, and visualizations are cr
 
 ![Correlation plot of the variables within the `abalone_train` dataset. The most relevant correlations are with the `rings` variable, which is the age of the abalone in years minus 1.5 years.](../output/images/correlation_plot.png){#fig-correlationplot}
 
-@fig-correlationplot shows that the relationship between the target variable, `rings`, with the other variables appears to be relatively linear. However, there are many correlations between the other variables, which are often stronger than the relationship between the target and predictor variables. Most notable are `whole_weight`, `shucked_weight`, `viscera_weight`, and `shell_weight`, which all have a correlation above 0.88 with each other. The best course of action to avoid problems with multicollinearity is to choose a single variable that has the best correlation with `age`. This variable is `shell_weight`, and the other three weight variables will be removed going forward.
+@fig-correlationplot shows that the relationship between the target variable, `rings`, with the other variables appears to be relatively linear. However, there are many correlations between the other variables, which are often stronger than the relationship between the target and predictor variables. Most notable are `whole_weight`, `shucked_weight`, `viscera_weight`, and `shell_weight`, which all have a high correlation with each other. The best course of action to avoid problems with multicollinearity is to choose a single variable that has the best correlation with `age`. This variable is `shell_weight`, and the other three weight variables will be removed going forward.
 
-The correlation between `diameter` and `length` is also quite high, at 0.987. `diameter` appears to correlate slightly better with `age` than `length`, so `diameter` will be selected as a predictor. `height` will also be selected as a predictor.
+The correlation between `diameter` and `length` is also quite high. `diameter` appears to correlate slightly better with `age` than `length`, so `diameter` will be selected as a predictor. `height` will also be selected as a predictor.
 
 Therefore, the final predictors of the dataset are `shell_weight`, `diameter`, and `height`, while the response variable is `age`.
 
@@ -126,7 +125,7 @@ weight_coef <- round(coefs$estimate[4], digits = 6)
 The linear regression model provides an equation for predicting the shell weight of an abalone.
 The equation is as follows:
 
-$$age = `{r} intercept` - (`{r} diam_coef` \times diameter) + (`{r} height_coef` \times height) + (`{r} weight_coef` \times shell\_weight)$$
+age = `{r} intercept` + (`{r} diam_coef` * diameter) + (`{r} height_coef` * height) + (`{r} weight_coef` * shell_weight)
 
 This equation means that for every 1 mm increase in height, the age of the abalone increases by `{r} round(height_coef, digits=2)` years (about `{r} round((height_coef*365))` days). 
 Based on this model, diameter appears to be negatively correlated with the age of the abalone. 

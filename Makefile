@@ -5,7 +5,7 @@ all:
 	make data/clean/abalone_train.csv data/clean/abalone_test.csv
 	make output/images/correlation_plot.png output/tables/abalone_train_summ.csv output/images/age_histogram.png
 	make output/tables/coefs.csv output/tables/metrics.csv output/images/abalone_predicted.png
-	make report
+	make index.html
 
 # Download raw data from UCI Machine Learning Repository
 data/raw/abalone_data.csv: scripts/01-read_data.R
@@ -24,14 +24,11 @@ output/tables/coefs.csv output/tables/metrics.csv output/images/abalone_predicte
 
 index.html: report/abalone_age_prediction.qmd
 	quarto render report/abalone_age_prediction.qmd
-	mv report/abalone_age_prediction.html index.html
+	mv report/abalone_age_prediction.html docs/index.html
 
-report:
-	make index.html
 
 clean:
 	rm -f output/images/*
 	rm -f output/tables/*
 	rm -f data/clean/*
-	rm -f index.html
 	rm -f *.pdf
