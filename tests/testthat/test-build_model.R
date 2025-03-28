@@ -1,5 +1,5 @@
 library(testthat)
-source("../../R/build_model.R")
+source("R/build_model.R")
 
 # function input for tests for build_model
 training_list <- c(1:40)
