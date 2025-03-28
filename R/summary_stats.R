@@ -37,7 +37,7 @@ get_summary <- function(dataset) {
   # returns a dataframe with 6 columns: variable,mean, median, variance,
   # minimum, and maximum
   dataset |>
-    select(age, shell_weight, diameter, height) |>
+    select(age, shell_weight, diameter, height) |> # should we use select_if(is.numeric)
     pivot_longer(cols = height:age, names_to = "variable", values_to = "values") |>
     group_by(variable) |>
     summarize(
