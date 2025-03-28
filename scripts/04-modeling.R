@@ -17,6 +17,10 @@ set.seed(1234)
 
 
 fit <- build_model(abalone_train)
+
+# inline tests for build_model
+source("tests/testthat/test-build_model.R")
+
 coefs <- tidy(fit)
 
 write_csv(coefs, file = opt$coefs_path)
