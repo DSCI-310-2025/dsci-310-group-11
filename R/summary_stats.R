@@ -1,6 +1,5 @@
 
 library(tidymodels)
-library(dplyr)
 
 get_summary <- function(dataset) {
   dataset |>
