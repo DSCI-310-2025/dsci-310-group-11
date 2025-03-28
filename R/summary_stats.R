@@ -22,8 +22,9 @@
 #'   each variable.
 #'   The sixth column (named `maximum`) contains the maximum value for
 #'   each variable.
-#'   It will have 4 rows, each corresponding to one of the variables 
-#'   selected from the original dataset (age, shell_weight, diameter, and height).
+#'   It will have 4 rows, each corresponding to one of the variables
+#'   selected from the original dataset (age, shell_weight, diameter,
+#'   and height).
 #'
 #' @export
 #' library(tidymodels)
