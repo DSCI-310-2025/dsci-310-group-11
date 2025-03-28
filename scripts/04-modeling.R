@@ -1,6 +1,7 @@
 library(readr)
 library(tidymodels)
 library(docopt)
+source("R/build_model.R")
 
 "This script creates the linear regression model, analyzes the performance of the model, and creates output visualizations
 
@@ -14,20 +15,12 @@ abalone_test <- read_csv(opt$test_path)
 
 set.seed(1234)
 
-spec <- linear_reg() |>
-  set_engine("lm") |>
-  set_mode("regression")
 
-recipe <- recipe(age ~ diameter + height + shell_weight, data = abalone_train)
-
-fit <- workflow() |>
-  add_recipe(recipe) |>
-  add_model(spec) |>
-  fit(data = abalone_train)
-
+fit <- build_model(abalone_train)
 coefs <- tidy(fit)
 
 write_csv(coefs, file = opt$coefs_path)
+
 
 abalone_predicted <- predict(fit, abalone_test) |>
   bind_cols(abalone_test)
@@ -40,7 +33,7 @@ write_csv(metrics, file = opt$metrics_path)
 weight_predict_plot <- abalone_predicted |>
   ggplot(aes(x = shell_weight)) +
   geom_point(aes(y = age), alpha = 0.3) +
-  geom_line(aes(y = .pred), color = "skyblue", size = 0.75) +
+  geom_line(aes(y = .pred), color = "skyblue", linewidth = 0.75) +
   labs(x = "Shell Weight (grams)", y = "Age (years)", title = "Abalone Predicted Age and True Age")
 
 ggsave(weight_predict_plot, file = opt$viz_path)
