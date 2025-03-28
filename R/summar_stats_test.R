@@ -3,10 +3,10 @@ library(testthat)
 library(GGally)
 set.seed(2025)
 
-source(summary_stats)
+source("../../R/summary_stats")
 
 # test input data
-numeric_df <- tibble(
+all_numeric_df <- tibble(
   age = c(5, 10, 15, 20),
   shell_weight = c(0.1, 0.2, 0.3, 0.4),
   diameter = c(0.5, 0.6, 0.7, 0.8),
@@ -19,11 +19,12 @@ mixed_df <- tibble(
   category = c("A", "B", "A", "B")
 )
 
-one_row_df <- tibble(
-  age = 10,
-  shell_weight = 0.2,
-  diameter = 0.6,
-  height = 0.06
+one_row_numeric_df <- tibble(
+  age = c(5, 10, 15, 20)
+)
+
+one_row_non_numeric_df <- tibble(
+  category = c("A", "B", "A", "B")
 )
 
 empty_df <- tibble(
@@ -33,7 +34,7 @@ empty_df <- tibble(
   height = numeric(0)
 )
 
-non_numeric_df <- tibble(
+all_non_numeric_df <- tibble(
   category = c("A", "B", "C", "D"),
   label = c("X", "Y", "Z", "W")
 )

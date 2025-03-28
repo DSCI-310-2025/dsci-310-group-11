@@ -24,27 +24,21 @@
 #'   Each row corresponds to one of the variables selected from the
 #'   original dataset
 #' @export
-#' library(tidymodels)
-#' library(dplyr)
-#' library(tidyr)
+#' 
 #' @examples
 #' get_summary(abalone_train)
 
-library(tidymodels)
-library(dplyr)
-library(tidyr)
 
 get_summary <- function(dataset) {
   # returns a dataframe with 6 columns: variable, mean, median, variance,
   # minimum, and maximum
-  dataset |>
-    select_if(is.numeric) |> # select(age, shell_weight, diameter, height) |>
-    pivot_longer(cols = everything(), names_to = "variable", values_to = "values") |>
-    group_by(variable) |>
-    summarize(
+  dplyr::select_if(is.numeric) |> 
+    tidyr::pivot_longer(cols = tidyselect::everything(), names_to = "variable", values_to = "values") |>
+    dplyr::group_by(variable) |>
+    dplyr::summarize(
       mean = mean(values, na.rm = TRUE),
       median = median(values, na.rm = TRUE),
-      variance = var(values, na.rm = TRUE),
+      variance = stats::var(values, na.rm = TRUE),
       minimum = min(values, na.rm = TRUE),
       maximum = max(values, na.rm = TRUE)
     )
