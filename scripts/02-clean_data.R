@@ -43,6 +43,9 @@ abalone_no_sex |> # checking columns and values are > 0.0 and therefore unscaled
 abalone_no_sex |> # checking for age (new target) column 
   col_exists(vars(age))
 
+abalone_no_sex |> # checking age is greater than 1.5 
+  col_vals_gt(age, value = 1.5)
+
 expect_error(
   abalone_no_sex |> #checking sex and rings columns are not present 
     col_exists(vars(sex, rings))
