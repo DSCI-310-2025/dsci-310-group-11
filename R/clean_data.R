@@ -3,7 +3,7 @@
 #' removing the old target variable 
 #' and removing an unnecessary categorical variable. 
  
-#' @param data_frame Abalone dataframe 
+#' @param data_frame raw Abalone dataframe with scaled values 
 #' 
 #' @return a data_frame with reversed scaling, new target variable, removed columns 
 #' 
@@ -12,9 +12,25 @@
 #' @examples 
 #' clean_data(abalone_data)
 
-clean_data <- function(raw_data = "abalone data to be cleaned") {
+clean_data <- function(abalone_data = "abalone data to be cleaned") {
 
     #returns clean data according to the above specifications
+
+    # Reversing the scaling for readability purposes 
+    abalone_data <- abalone_data |> 
+        dplyr::mutate(length = length * 200,
+            diameter = diameter * 200,
+            height = height * 200,
+            whole_weight = whole_weight * 200,
+            shucked_weight = shucked_weight * 200,
+            viscera_weight = viscera_weight * 200,
+            shell_weight = shell_weight * 200,
+            age = rings + 1.5 #  adding the age variable 
+        ) |> 
+        # Clean data - removing old target variable and removing unecessary categorical sex variable 
+        dplyr::select(-sex, -rings)
+
+        return(abalone_data)
 }
 
 

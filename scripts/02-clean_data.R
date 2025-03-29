@@ -54,9 +54,7 @@ expect_error(
 
 # Splitting the data into training and testing sets 
 set.seed(1234)
-abalone_split <- initial_split(abalone_no_sex, prop = 0.7, strata = age)
-abalone_train <- training(abalone_split)
-abalone_test <- testing(abalone_split)
+clean_data(abalone_no_sex)
 
 abalone_train
 abalone_test
