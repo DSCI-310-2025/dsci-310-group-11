@@ -26,4 +26,11 @@ clean_data <- function(raw_data = "abalone data to be cleaned") {
 split_data <- function(clean_data = "clean abalone data") {
     
     # splits data into training and testing set 
+
+    set.seed(1234)
+    abalone_split <- rsample::initial_split(abalone_no_sex, prop = 0.7, strata = age)
+    abalone_train <- rsample::training(abalone_split)
+    abalone_test <- rsample::testing(abalone_split)
+
+    return(list(train = abalone_train, test = abalone_test))
 }
