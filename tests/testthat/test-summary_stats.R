@@ -59,13 +59,13 @@ mixed_df_output <- tibble(
   maximum = c(20, 0.4)
 )
 
-one_row_non_numeric_df_output <- tibble(
-  variable = character(0),
-  mean = numeric(0),
-  median = numeric(0),
-  variance = numeric(0),
-  minimum = numeric(0),
-  maximum = numeric(0)
+one_row_numeric_df_output <- tibble(
+  variable = c("age"),
+  mean = c(12.5),
+  median = numeric(12.5),
+  variance = numeric(41.67),
+  minimum = numeric(5),
+  maximum = numeric(10)
 )
 
 
@@ -79,6 +79,9 @@ empty_df_output <- tibble(
 )
 
 
+
+
+
 # tests
 test_that("a dataframe with numeric values returns correct summary", {
   expect_equal(get_summary(numeric_df), numeric_df_output)
@@ -87,10 +90,12 @@ test_that("a dataframe with numeric values returns correct summary", {
 
 test_that("a dataframe with mixed numeric and non-numeric columns selects only numeric", {
   expect_equal(get_summary(mixed_df), numeric_df_output)
+  expect_s3_class(get_summary(mixed_df), "data.frame")
 })
 
-test_that("a dataframe with one numeric row returns correct summary", {
+test_that("a dataframe with only one numeric row returns correct summary", {
   expect_equal(get_summary(one_numeric_row_df), one_numeric_row_df_output)
+  expect_s3_class(get_summary(one_numeric_row_df), "data.frame")
 })
 
 test_that("a dataframe with one non-numeric row returns an empty summary", {
@@ -99,6 +104,7 @@ test_that("a dataframe with one non-numeric row returns an empty summary", {
 
 test_that("an empty dataframe returns an empty output", {
   expect_equal(get_summary(empty_df), empty_df_output)
+  expect_s3_class(get_summary(empty_df), "data.frame")
 })
 
 test_that("a dataframe with non-numeric columns only should return an error", {
