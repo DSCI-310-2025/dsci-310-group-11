@@ -59,15 +59,6 @@ mixed_df_output <- tibble(
   maximum = c(20, 0.4)
 )
 
-one_row_numeric_df_output <- tibble(
-  variable = c("age"),
-  mean = c(12.5),
-  median = c(12.5),
-  variance = c(41.67),
-  minimum = c(5),
-  maximum = c(20)
-)
-
 one_row_non_numeric_df_output <- tibble(
   variable = character(0),
   mean = numeric(0),
@@ -87,14 +78,6 @@ empty_df_output <- tibble(
   maximum = numeric(0)
 )
 
-non_numeric_df_output <- tibble(
-  variable = character(0),
-  mean = numeric(0),
-  median = numeric(0),
-  variance = numeric(0),
-  minimum = numeric(0),
-  maximum = numeric(0)
-)
 
 # tests
 test_that("a dataframe with numeric values returns correct summary", {
