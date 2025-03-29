@@ -41,13 +41,22 @@ all_non_numeric_df <- tibble(
 
 
 # expected test outputs
+# all_numeric_df_output <- tibble(
+#   variable = c("age", "shell_weight", "diameter", "height"),
+#   mean = c(12.5, 0.25, 0.65, 0.065),
+#   median = c(12.5, 0.25, 0.65, 0.065),
+#   variance = c(41.7, 0.01667, 0.01667, 0.000167),
+#   minimum = c(5, 0.1, 0.5, 0.05),
+#   maximum = c(20, 0.4, 0.8, 0.08)
+# )
+
 all_numeric_df_output <- tibble(
-  variable = c("age", "shell_weight", "diameter", "height"),
-  mean = c(12.5, 0.25, 0.65, 0.065),
-  median = c(12.5, 0.25, 0.65, 0.065),
-  variance = c(41.67, 0.01667, 0.01667, 0.000167),
-  minimum = c(5, 0.1, 0.5, 0.05),
-  maximum = c(20, 0.4, 0.8, 0.08)
+  variable = c("age", "diameter", "height", "shell_weight"),
+  mean = c(12.5, 0.65, 0.065, 0.25),
+  median = c(12.5, 0.65, 0.065,  0.25),
+  variance = c(41.7, 0.0167, 0.000167, 0.0167),
+  minimum = c(5, 0.5, 0.05,  0.1),
+  maximum = c(20, 0.8, 0.08,  0.4)
 )
 
 mixed_df_output <- tibble(
@@ -84,22 +93,29 @@ empty_df_output <- tibble(
 
 # tests
 test_that("a dataframe with numeric values returns correct summary", {
-  expect_equal(get_summary(numeric_df), numeric_df_output)
-  expect_s3_class(get_summary(numeric_df), "data.frame")
+  expect_equal(get_summary(all_numeric_df), all_numeric_df_output)
+  expect_s3_class(get_summary(all_numeric_df), "data.frame")
 })
 
 test_that("a dataframe with mixed numeric and non-numeric columns selects only numeric", {
-  expect_equal(get_summary(mixed_df), numeric_df_output)
+  expect_equal(get_summary(mixed_df), mixed_df_output)
   expect_s3_class(get_summary(mixed_df), "data.frame")
 })
 
-test_that("a dataframe with only one numeric row returns correct summary", {
-  expect_equal(get_summary(one_numeric_row_df), one_numeric_row_df_output)
-  expect_s3_class(get_summary(one_numeric_row_df), "data.frame")
+test_that("a dataframe with only one numeric column returns correct summary", {
+  expect_equal(get_summary(one_row_numeric_df), tibble(
+    variable = c("age"),
+    mean = c(mean(one_row_numeric_df$age)),
+    median = c(median(one_row_numeric_df$age)),
+    variance = NA_real_,  # Variance is NA for a single row
+    minimum = min(one_row_numeric_df$age),
+    maximum = max(one_row_numeric_df$age)
+  ))
+  expect_s3_class(get_summary(one_row_numeric_df), "data.frame")
 })
 
-test_that("a dataframe with one non-numeric row returns an empty summary", {
-  expect_error(get_summary(one_row_non_numeric_df))
+test_that("a dataframe with one non-numeric row returns an error", {
+  expect_error(get_summary(one_row_non_numeric_df), "No numeric columns found")
 })
 
 test_that("an empty dataframe returns an empty output", {
@@ -108,5 +124,11 @@ test_that("an empty dataframe returns an empty output", {
 })
 
 test_that("a dataframe with non-numeric columns only should return an error", {
-  expect_error(get_summary(non_numeric_df))
+  expect_error(get_summary(all_non_numeric_df), "No numeric columns found")
+})
+
+test_that("summary function returns a tibble with consistent column lengths", {
+  result <- get_summary(all_numeric_df)
+  column_lengths <- sapply(result, length)
+  expect_true(all(column_lengths == nrow(result)), "Column lengths must match the number of rows in the output tibble")
 })

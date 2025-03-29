@@ -36,7 +36,7 @@ get_summary <- function(dataset) {
     dplyr::select(where(is.numeric)) |>
     tidyr::pivot_longer(cols = tidyselect::everything(), names_to = "variable", values_to = "values") |>
     dplyr::group_by(variable) |>
-    dplyr::summarize(
+    dplyr::reframe(
       mean = mean(values, na.rm = TRUE),
       median = median(values, na.rm = TRUE),
       variance = stats::var(values, na.rm = TRUE),
