@@ -24,7 +24,7 @@
 #'   Each row corresponds to one of the variables selected from the
 #'   original dataset
 #' @export
-#' 
+#'
 #' @examples
 #' get_summary(abalone_train)
 
@@ -32,7 +32,8 @@
 get_summary <- function(dataset) {
   # returns a dataframe with 6 columns: variable, mean, median, variance,
   # minimum, and maximum
-  dplyr::select_if(is.numeric) |> 
+  dataset |>
+    dplyr::select(where(is.numeric)) |>
     tidyr::pivot_longer(cols = tidyselect::everything(), names_to = "variable", values_to = "values") |>
     dplyr::group_by(variable) |>
     dplyr::summarize(

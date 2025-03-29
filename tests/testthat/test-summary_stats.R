@@ -1,8 +1,5 @@
 library(testthat)
 
-library(GGally)
-set.seed(2025)
-
 source("../../R/summary_stats")
 
 # test input data
@@ -39,8 +36,12 @@ all_non_numeric_df <- tibble(
   label = c("X", "Y", "Z", "W")
 )
 
+
+
+
+
 # expected test outputs
-numeric_df_output <- tibble(
+all_numeric_df_output <- tibble(
   variable = c("age", "shell_weight", "diameter", "height"),
   mean = c(12.5, 0.25, 0.65, 0.065),
   median = c(12.5, 0.25, 0.65, 0.065),
@@ -58,14 +59,24 @@ mixed_df_output <- tibble(
   maximum = c(20, 0.4)
 )
 
-one_row_df_output <- tibble(
-  variable = c("age", "shell_weight", "diameter", "height"),
-  mean = c(10, 0.2, 0.6, 0.06),
-  median = c(10, 0.2, 0.6, 0.06),
-  variance = c(NA, NA, NA, NA),
-  minimum = c(10, 0.2, 0.6, 0.06),
-  maximum = c(10, 0.2, 0.6, 0.06)
+one_row_numeric_df_output <- tibble(
+  variable = c("age"),
+  mean = c(12.5),
+  median = c(12.5),
+  variance = c(41.67),
+  minimum = c(5),
+  maximum = c(20)
 )
+
+one_row_non_numeric_df_output <- tibble(
+  variable = character(0),
+  mean = numeric(0),
+  median = numeric(0),
+  variance = numeric(0),
+  minimum = numeric(0),
+  maximum = numeric(0)
+)
+
 
 empty_df_output <- tibble(
   variable = character(0),
@@ -87,16 +98,20 @@ non_numeric_df_output <- tibble(
 
 # tests
 test_that("a dataframe with numeric values returns correct summary", {
-  expect_equal(get_summary(numeric_df), numeric_df_output, tolerance = 1e-2)
+  expect_equal(get_summary(numeric_df), numeric_df_output)
   expect_s3_class(get_summary(numeric_df), "data.frame")
 })
 
 test_that("a dataframe with mixed numeric and non-numeric columns selects only numeric", {
-  expect_equal(get_summary(mixed_df), numeric_df_output, tolerance = 1e-2)
+  expect_equal(get_summary(mixed_df), numeric_df_output)
 })
 
-test_that("a dataframe with one row returns correct summary", {
-  expect_equal(get_summary(one_row_df), one_row_df_output, tolerance = 1e-2)
+test_that("a dataframe with one numeric row returns correct summary", {
+  expect_equal(get_summary(one_numeric_row_df), one_numeric_row_df_output)
+})
+
+test_that("a dataframe with one non-numeric row returns an empty summary", {
+  expect_error(get_summary(one_row_non_numeric_df))
 })
 
 test_that("an empty dataframe returns an empty output", {
