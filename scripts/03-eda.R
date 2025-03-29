@@ -2,6 +2,7 @@ library(docopt)
 library(GGally)
 library(readr)
 library(tidymodels)
+source("R/get_summary.R")
 
 "this script conducts the exploratory data analysis on the abalone dataset
 includes preliminary analysis, summary statistics for the predictor variables 
@@ -18,17 +19,11 @@ correlation_plot <- ggpairs(abalone_train) +
   theme(text = element_text(size = 10))
 correlation_plot
 
-# summary statistics for abalone data
-abalone_train_summ <- abalone_train |>
-  select(age, shell_weight, diameter, height) |>
-  pivot_longer(cols = height:age, names_to = "variable", values_to = "values") |>
-  group_by(variable) |>
-  summarize(mean = mean(values),
-            median = median(values),
-            variance = var(values),
-            minimum = min(values),
-            maximum = max(values))
-abalone_train_summ
+# summary statistics for abalone data using abstracted function
+abalone_train_summ <- get_summary(abalone_train)
+
+# inline tests for get_summary()
+source("tests/testthat/test-get_summary.R")
 
 # histogram of abalone age
 age_histogram <- abalone_train |>

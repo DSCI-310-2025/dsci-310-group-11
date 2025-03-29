@@ -1,6 +1,6 @@
 library(testthat)
 
-source("../../R/summary_stats")
+source("R/get_summary.R")
 
 # test input data
 all_numeric_df <- tibble(
