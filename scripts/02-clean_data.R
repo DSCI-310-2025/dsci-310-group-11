@@ -3,6 +3,8 @@ library(tidymodels)
 library(readr)
 library(docopt)
 library(testthat)
+library(pointblank)
+data(abalone_no_sex)
 source("R/clean_data.R")
 
 # Cleaning the data 
@@ -16,7 +18,7 @@ opt <- docopt(doc)
 
 abalone_data <- read_csv(opt$file_path)
 
-# reversing the scaling for readability purposes 
+# Reversing the scaling for readability purposes 
 abalone_data <- abalone_data |> 
   mutate(length = length * 200,
          diameter = diameter * 200,
@@ -26,14 +28,29 @@ abalone_data <- abalone_data |>
          viscera_weight = viscera_weight * 200,
          shell_weight = shell_weight * 200)
 
-#Creating the new target variable (age)
+
+# Creating the new target variable (age)
 abalone_data <- abalone_data |> 
   mutate(age = rings + 1.5)
 
-#Clean data - removing old target variable and removing unecessary categorical sex variable 
+# Clean data - removing old target variable and removing unecessary categorical sex variable 
 abalone_no_sex <- abalone_data |> select(-sex, -rings)
 
-#Splitting the data into training and testing sets 
+# Data validation
+abalone_no_sex |> # checking columns and values are > 0.0 and therefore unscaled 
+  col_vals_gt(vars(length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight), value = 0.0)
+
+abalone_no_sex |> # checking for age (new target) column 
+  col_exists(vars(age))
+
+expect_error(
+  abalone_no_sex |> #checking sex and rings columns are not present 
+    col_exists(vars(sex, rings))
+    interrogate(),
+  regexp = "not found"
+)
+
+# Splitting the data into training and testing sets 
 set.seed(1234)
 abalone_split <- initial_split(abalone_no_sex, prop = 0.7, strata = age)
 abalone_train <- training(abalone_split)
@@ -42,7 +59,7 @@ abalone_test <- testing(abalone_split)
 abalone_train
 abalone_test
 
-#creating the training and testing output files 
+# Creating the training and testing output files 
 write_csv(abalone_train, opt$output_train_path)
 write_csv(abalone_test, opt$output_test_path)
 
