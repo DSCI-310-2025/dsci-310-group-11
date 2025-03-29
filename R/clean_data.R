@@ -12,7 +12,7 @@
 #' @examples 
 #' clean_data(abalone_data)
 
-clean_data <- function(abalone_data = "abalone data to be cleaned") {
+clean_data <- function(abalone_data) {
 
     #returns clean data according to the above specifications
 

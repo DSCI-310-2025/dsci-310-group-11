@@ -17,47 +17,59 @@ opt <- docopt(doc)
 
 abalone_data <- read_csv(opt$file_path)
 
-# Reversing the scaling for readability purposes 
-abalone_data <- abalone_data |> 
-  mutate(length = length * 200,
-         diameter = diameter * 200,
-         height = height * 200,
-         whole_weight = whole_weight * 200,
-         shucked_weight = shucked_weight * 200,
-         viscera_weight = viscera_weight * 200,
-         shell_weight = shell_weight * 200)
+# Calling abstracted clean data function 
+
+abalone_data <- clean_data(abalone_data)
+
+# # Reversing the scaling for readability purposes 
+# abalone_data <- abalone_data |> 
+#   mutate(length = length * 200,
+#          diameter = diameter * 200,
+#          height = height * 200,
+#          whole_weight = whole_weight * 200,
+#          shucked_weight = shucked_weight * 200,
+#          viscera_weight = viscera_weight * 200,
+#          shell_weight = shell_weight * 200)
 
 
-# Creating the new target variable (age)
-abalone_data <- abalone_data |> 
-  mutate(age = rings + 1.5)
+# # Creating the new target variable (age)
+# abalone_data <- abalone_data |> 
+#   mutate(age = rings + 1.5)
 
-# Clean data - removing old target variable and removing unecessary categorical sex variable 
-abalone_no_sex <- abalone_data |> select(-sex, -rings)
+# # Clean data - removing old target variable and removing unecessary categorical sex variable 
+# abalone_no_sex <- abalone_data |> select(-sex, -rings)
 
 # Data validation
-abalone_no_sex |> # checking columns and values are > 0.9 and therefore unscaled 
-  col_vals_gt(vars(length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight), value = 0.9)
+create_agent(tbl = abalone_data)
 
-abalone_no_sex |> # checking for age (new target) column 
-  col_exists(vars(age))
+abalone_data |> # checking columns and values are > -1 and not negative or still scaled 
+  col_vals_gt(columns = vars(length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight), value = -1) |>
+  interrogate()
 
-abalone_no_sex |> # checking age is greater than 1.5 
-  col_vals_gt(age, value = 1.5)
+abalone_data |> # checking for age (new target) column 
+  col_exists("age")|>  
+  interrogate()
 
-expect_error(
-  abalone_no_sex |> #checking sex and rings columns are not present 
-    col_exists(vars(sex, rings))
+abalone_data |> # checking age is greater than 1.5 
+  col_vals_gt(columns = vars(age), value = 1.5) |>
+  interrogate()
+
+expect_error({
+  abalone_data |> #checking sex and rings columns are not present 
+    col_exists("sex") |>
+    col_exists("rings") |>
     interrogate(),
-  regexp = "not found"
-)
+}, regexp = "not found")
+
 
 # Splitting the data into training and testing sets 
 set.seed(1234)
-clean_data(abalone_no_sex)
+split_data(abalone_data)
 
 abalone_train
 abalone_test
+
+source("tests/testthat/test-clean-data.R")
 
 # Creating the training and testing output files 
 write_csv(abalone_train, opt$output_train_path)
