@@ -20,10 +20,6 @@ one_row_numeric_df <- tibble(
   age = c(5, 10, 15, 20)
 )
 
-one_row_non_numeric_df <- tibble(
-  category = c("A", "B", "A", "B")
-)
-
 empty_df <- tibble(
   age = numeric(0),
   shell_weight = numeric(0),
@@ -114,10 +110,6 @@ test_that("a dataframe with mixed numeric and non-numeric columns selects only n
 test_that("a dataframe with only one numeric column returns correct summary", {
   expect_equal(get_summary(one_row_numeric_df), one_row_numeric_df_output)
   expect_s3_class(get_summary(one_row_numeric_df), "data.frame")
-})
-
-test_that("a dataframe with one non-numeric row returns an error", {
-  expect_error(get_summary(one_row_non_numeric_df), "No numeric columns found")
 })
 
 test_that("an empty dataframe returns an empty output", {

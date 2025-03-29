@@ -37,10 +37,10 @@ get_summary <- function(dataset) {
     tidyr::pivot_longer(cols = tidyselect::everything(), names_to = "variable", values_to = "values") |>
     dplyr::group_by(variable) |>
     dplyr::reframe(
-      mean = mean(values, na.rm = TRUE),
-      median = median(values, na.rm = TRUE),
-      variance = stats::var(values, na.rm = TRUE),
-      minimum = min(values, na.rm = TRUE),
-      maximum = max(values, na.rm = TRUE)
+      mean = round(mean(values, na.rm = TRUE), 4),
+      median = round(median(values, na.rm = TRUE), 4),
+      variance = round(stats::var(values, na.rm = TRUE), 4),
+      minimum = round(min(values, na.rm = TRUE), 4),
+      maximum = round(max(values, na.rm = TRUE), 4)
     )
 }
