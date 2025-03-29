@@ -2,7 +2,8 @@
 library(tidymodels)
 library(readr)
 library(docopt)
-
+library(testthat)
+source("R/clean_data.R")
 
 # Cleaning the data 
 
