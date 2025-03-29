@@ -37,8 +37,8 @@ abalone_data <- abalone_data |>
 abalone_no_sex <- abalone_data |> select(-sex, -rings)
 
 # Data validation
-abalone_no_sex |> # checking columns and values are > 0.0 and therefore unscaled 
-  col_vals_gt(vars(length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight), value = 0.0)
+abalone_no_sex |> # checking columns and values are > 0.9 and therefore unscaled 
+  col_vals_gt(vars(length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight), value = 0.9)
 
 abalone_no_sex |> # checking for age (new target) column 
   col_exists(vars(age))

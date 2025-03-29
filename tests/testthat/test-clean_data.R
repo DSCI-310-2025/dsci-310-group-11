@@ -35,7 +35,24 @@ test_that("clean data is returned unscaled with new target and removed columns",
     expect_s3_classes(clean_data(data_with_age), "data.frame")
 })
 
-# data validation is done with data used for analysis in the script file 
+# further testing is done with data validation on data used for analysis in the script file. 
 
 
 # Tests for split_data function 
+
+test_that("split_data splits the clean data correctly", {
+    splits <- split_data(data_with_age)
+    
+    #test that the function returns list with train and test in the names 
+    expect_true("train" %in% names(splits))
+    expect_true("test" %in% names(splits))
+
+    # test the proportion of the splits
+
+    #that the training data is 70% of the rows of the data
+    expect_equal(nrow(split$train), floor(0.7 * nrow(data_with_age)))
+
+    # that the testing data is the remaining 30% of the data
+    expect_equal(nrow(splits$test), nrow(data_with_age) - nrow(splits$train))
+
+})

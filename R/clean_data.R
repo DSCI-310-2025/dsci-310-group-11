@@ -21,7 +21,7 @@ clean_data <- function(raw_data = "abalone data to be cleaned") {
 #' Creates the training and testing sets.
 #' @param data_frame clean data that is ready to be split into traininng and testing
 #' 
-#' @return assigns training and testing sets to variables 
+#' @return assigned training and testing sets to variables, returned as a list 
 
 split_data <- function(clean_data = "clean abalone data") {
     
