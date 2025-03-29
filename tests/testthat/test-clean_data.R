@@ -31,7 +31,7 @@ data_with_age <- data.frame(length = data_scaled$length * 200,
 
 test_that("clean data is returned unscaled with new target and removed columns", {
     expect_equal(clean_data(data_scaled), data_with_age)
-    expect_s3_classes(clean_data(data_with_age), "data.frame")
+    expect_s3_class(clean_data(data_with_age), "data.frame")
 })
 
 # further testing is done with data validation on data used for analysis in the script file 

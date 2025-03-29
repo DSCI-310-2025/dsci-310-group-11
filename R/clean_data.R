@@ -39,14 +39,16 @@ clean_data <- function(abalone_data) {
 #' 
 #' @return assigned training and testing sets to variables, returned as a list 
 
-split_data <- function(clean_data = "clean abalone data") {
+split_data <- function(clean_data) {
     
     # splits data into training and testing set 
 
     set.seed(1234)
-    abalone_split <- rsample::initial_split(abalone_no_sex, prop = 0.7, strata = age)
-    abalone_train <- rsample::training(abalone_split)
-    abalone_test <- rsample::testing(abalone_split)
+    abalone_split <- rsample::initial_split(clean_data, prop = 0.7, strata = age)
+    
+    #assigning to variables in global environment 
+    abalone_train <<- rsample::training(abalone_split)
+    abalone_test <<- rsample::testing(abalone_split)
 
     return(list(train = abalone_train, test = abalone_test))
 }

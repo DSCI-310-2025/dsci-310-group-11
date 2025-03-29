@@ -40,26 +40,26 @@ abalone_data <- clean_data(abalone_data)
 # abalone_no_sex <- abalone_data |> select(-sex, -rings)
 
 # Data validation
-create_agent(tbl = abalone_data)
+# Create an agent and set the data table
+# Create an agent for data validation
+agent <- create_agent(tbl = abalone_data) |>  
 
-abalone_data |> # checking columns and values are > -1 and not negative or still scaled 
-  col_vals_gt(columns = vars(length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight), value = -1) |>
+  # Check columns are properly scaled (> -1)
+  col_vals_gt(columns = vars(length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight), value = -1) |>  
+
+  # Check that the "age" column exists
+  col_exists("age") |>  
+
+  # Check that age is greater than 1.5
+  col_vals_gt(columns = vars(age), value = 1.5) |>  
+
+  # Perform the interrogation
   interrogate()
 
-abalone_data |> # checking for age (new target) column 
-  col_exists("age")|>  
-  interrogate()
-
-abalone_data |> # checking age is greater than 1.5 
-  col_vals_gt(columns = vars(age), value = 1.5) |>
-  interrogate()
-
-expect_error({
-  abalone_data |> #checking sex and rings columns are not present 
-    col_exists("sex") |>
-    col_exists("rings") |>
-    interrogate(),
-}, regexp = "not found")
+# **Check that sex and rings are NOT in the dataset**
+# If columns do not exist, test should PASS
+expect_false("sex" %in% colnames(abalone_data))
+expect_false("rings" %in% colnames(abalone_data))
 
 
 # Splitting the data into training and testing sets 
@@ -69,11 +69,12 @@ split_data(abalone_data)
 abalone_train
 abalone_test
 
-source("tests/testthat/test-clean-data.R")
 
 # Creating the training and testing output files 
 write_csv(abalone_train, opt$output_train_path)
 write_csv(abalone_test, opt$output_test_path)
+
+source("tests/testthat/test-clean_data.R")
 
 print("finished cleaning and splitting the data")
 # command to run: Rscript scripts/02-clean_data.R --file_path=data/raw/abalone_data.csv --output_train_path=data/clean/abalone_train.csv --output_test_path=data/clean/abalone_test.csv
