@@ -16,9 +16,9 @@ clean_data <- function(abalone_data) {
 
     #returns clean data according to the above specifications
 
-    # Reversing the scaling for readability purposes 
     abalone_data <- abalone_data |> 
-        dplyr::mutate(length = length * 200,
+        dplyr::mutate(
+            length = length * 200, # Reversing the scaling for readability purposes 
             diameter = diameter * 200,
             height = height * 200,
             whole_weight = whole_weight * 200,
@@ -30,7 +30,7 @@ clean_data <- function(abalone_data) {
         # Clean data - removing old target variable and removing unecessary categorical sex variable 
         dplyr::select(-sex, -rings)
 
-        return(abalone_data)
+    return(abalone_data)
 }
 
 
