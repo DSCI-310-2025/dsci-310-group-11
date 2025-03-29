@@ -3,15 +3,15 @@ source("R/clean_data.R")
 
 # Raw data for tests
 # Data with scaled values and no age column (raw data)
-data_scaled <- data.frame(length = c(1:2),
-                        diameter = c(1:2), 
-                        height = c(1:2),
-                        whole_weight = c(1:2),
-                        shucked_weight = c(1:2),
-                        viscera_weight = c(1:2),
+data_scaled <- data.frame(length = c(1:10),
+                        diameter = c(1:10), 
+                        height = c(1:10),
+                        whole_weight = c(1:10),
+                        shucked_weight = c(1:10),
+                        viscera_weight = c(1:10),
                         shell_weight = c(1:2), 
-                        sex = c(1:2), 
-                        rings = c(1:2)
+                        sex = c("M", "F", "M", "F","M", "F","M", "F", "M", "F"), 
+                        rings = c(1:10)
 )
 
 # Clean data for tests 
@@ -27,7 +27,6 @@ data_with_age <- data.frame(length = data_scaled$length * 200,
 )
 
 
-
 # Tests for clean_data function 
 
 test_that("clean data is returned unscaled with new target and removed columns", {
@@ -35,7 +34,7 @@ test_that("clean data is returned unscaled with new target and removed columns",
     expect_s3_classes(clean_data(data_with_age), "data.frame")
 })
 
-# further testing is done with data validation on data used for analysis in the script file. 
+# further testing is done with data validation on data used for analysis in the script file 
 
 
 # Tests for split_data function 

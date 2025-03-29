@@ -4,7 +4,6 @@ library(readr)
 library(docopt)
 library(testthat)
 library(pointblank)
-data(abalone_no_sex)
 source("R/clean_data.R")
 
 # Cleaning the data 
