@@ -68,13 +68,22 @@ mixed_df_output <- tibble(
   maximum = c(20, 0.4)
 )
 
+# one_row_numeric_df_output <- tibble(
+#   variable = c("age"),
+#   mean = c(12.5),
+#   median = numeric(12.5),
+#   variance = numeric(41.67),
+#   minimum = numeric(5),
+#   maximum = numeric(10)
+# )
+
 one_row_numeric_df_output <- tibble(
   variable = c("age"),
   mean = c(12.5),
-  median = numeric(12.5),
-  variance = numeric(41.67),
-  minimum = numeric(5),
-  maximum = numeric(10)
+  median = c(12.5),
+  variance = NA_real_,  # Variance is NA for a single row
+  minimum = c(5),
+  maximum = c(20)
 )
 
 
@@ -103,14 +112,7 @@ test_that("a dataframe with mixed numeric and non-numeric columns selects only n
 })
 
 test_that("a dataframe with only one numeric column returns correct summary", {
-  expect_equal(get_summary(one_row_numeric_df), tibble(
-    variable = c("age"),
-    mean = c(mean(one_row_numeric_df$age)),
-    median = c(median(one_row_numeric_df$age)),
-    variance = NA_real_,  # Variance is NA for a single row
-    minimum = min(one_row_numeric_df$age),
-    maximum = max(one_row_numeric_df$age)
-  ))
+  expect_equal(get_summary(one_row_numeric_df), one_row_numeric_df_output)
   expect_s3_class(get_summary(one_row_numeric_df), "data.frame")
 })
 
