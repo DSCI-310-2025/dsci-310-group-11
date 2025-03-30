@@ -1,11 +1,11 @@
 #' Clean the `abalone_data` by reversing the scaling, 
-#' creating a new age target variable, 
-#' removing the old target variable 
-#' and removing an unnecessary categorical variable. 
+#' creating a new age target variable, (age = rings + 1.5)
+#' removing the old target variable (rings)
+#' and removing an unnecessary categorical variable (sex). 
  
-#' @param data_frame raw Abalone dataframe with scaled values 
-#' 
-#' @return a data_frame with reversed scaling, new target variable, removed columns 
+#' @param data_frame Abalone dataframe with scaled values and the following columns:
+#'                  sex, lenght, diameter, height, whole_weight, shucked_weight, shell_weight, rings
+#' @return a data_frame with reversed scaling, new target variable (age), removed columns (rings and sex)
 #' 
 #' @export 
 #'
@@ -34,8 +34,9 @@ clean_data <- function(abalone_data) {
 }
 
 
-#' Creates the training and testing sets.
-#' @param data_frame clean data that is ready to be split into traininng and testing
+#' Creates the training and testing sets with a 70/30 train/test split using age for stratification.
+#' 
+#' @param data_frame clean data that is ready to be split into training and testing (used clean_data)
 #' 
 #' @return assigned training and testing sets to variables, returned as a list 
 
