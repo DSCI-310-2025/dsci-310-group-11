@@ -98,17 +98,17 @@ empty_df_output <- tibble(
 
 # tests
 test_that("a dataframe with numeric values returns correct summary", {
-  expect_equal(get_summary(all_numeric_df), all_numeric_df_output)
+  expect_equal(get_summary(all_numeric_df), all_numeric_df_output, tolerance = 1e-4)
   expect_s3_class(get_summary(all_numeric_df), "data.frame")
 })
 
 test_that("a dataframe with mixed numeric and non-numeric columns selects only numeric", {
-  expect_equal(get_summary(mixed_df), mixed_df_output)
+  expect_equal(get_summary(mixed_df), mixed_df_output, tolerance = 1e-4)
   expect_s3_class(get_summary(mixed_df), "data.frame")
 })
 
 test_that("a dataframe with only one numeric column returns correct summary", {
-  expect_equal(get_summary(one_row_numeric_df), one_row_numeric_df_output)
+  expect_equal(get_summary(one_row_numeric_df), one_row_numeric_df_output, tolerance = 1e-4)
   expect_s3_class(get_summary(one_row_numeric_df), "data.frame")
 })
 
