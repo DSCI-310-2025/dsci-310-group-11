@@ -1,4 +1,3 @@
-
 #' Generate summary statistics table for numerical features
 #'
 #' takes a dataset as input and calculates individual summary statistics
@@ -29,17 +28,35 @@
 #' get_summary(abalone_train)
 
 
-get_summary <- function(dataset) {
-  # returns a dataframe with 6 columns: variable, mean, median, variance,
-  # minimum, and maximum
-  dataset |>
-    dplyr::select(where(is.numeric)) |>
-    tidyr::pivot_longer(cols = tidyselect::everything(), names_to = "variable", values_to = "values") |>
-    dplyr::group_by(variable) |>
-    dplyr::reframe(
+get_summary <- function(df) {
+  # Check if the data frame is empty
+  if (nrow(df) == 0) {
+    return(tibble(
+      variable = character(0),
+      mean = numeric(0),
+      median = numeric(0),
+      variance = numeric(0),
+      minimum = numeric(0),
+      maximum = numeric(0)
+    ))
+  }
+  
+  # Select only numeric columns
+  numeric_cols <- df %>% select(where(is.numeric))
+  
+  # Check if there are no numeric columns
+  if (ncol(numeric_cols) == 0) {
+    stop("No numeric columns found")
+  }
+  
+  # Calculate summary statistics
+  numeric_cols %>%
+    pivot_longer(cols = everything(), names_to = "variable", values_to = "values") %>%
+    group_by(variable) %>%
+    reframe(
       mean = round(mean(values, na.rm = TRUE), 4),
       median = round(median(values, na.rm = TRUE), 4),
-      variance = round(stats::var(values, na.rm = TRUE), 4),
+      variance = round(var(values, na.rm = TRUE), 4),
       minimum = round(min(values, na.rm = TRUE), 4),
       maximum = round(max(values, na.rm = TRUE), 4)
     )

@@ -26,7 +26,6 @@ index.html: report/abalone_age_prediction.qmd
 	quarto render report/abalone_age_prediction.qmd
 	mv report/abalone_age_prediction.html docs/index.html
 
-
 clean:
 	rm -f output/images/*
 	rm -f output/tables/*
