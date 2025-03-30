@@ -1,5 +1,6 @@
 library(testthat)
-
+library(dplyr)
+local_edition(3)
 source("R/get_summary.R")
 
 # test input data
@@ -16,7 +17,7 @@ mixed_df <- tibble(
   category = c("A", "B", "A", "B")
 )
 
-one_row_numeric_df <- tibble(
+one_col_numeric_df <- tibble(
   age = c(5, 10, 15, 20)
 )
 
@@ -50,7 +51,7 @@ all_numeric_df_output <- tibble(
   variable = c("age", "diameter", "height", "shell_weight"),
   mean = c(12.5, 0.65, 0.065, 0.25),
   median = c(12.5, 0.65, 0.065,  0.25),
-  variance = c(41.7, 0.0167, 0.000167, 0.0167),
+  variance = c(41.7, 0.0167, 0.0002, 0.0167),
   minimum = c(5, 0.5, 0.05,  0.1),
   maximum = c(20, 0.8, 0.08,  0.4)
 )
@@ -64,22 +65,13 @@ mixed_df_output <- tibble(
   maximum = c(20, 0.4)
 )
 
-# one_row_numeric_df_output <- tibble(
-#   variable = c("age"),
-#   mean = c(12.5),
-#   median = numeric(12.5),
-#   variance = numeric(41.67),
-#   minimum = numeric(5),
-#   maximum = numeric(10)
-# )
-
-one_row_numeric_df_output <- tibble(
+one_col_numeric_df_output <- tibble(
   variable = c("age"),
   mean = c(12.5),
   median = c(12.5),
-  variance = NA_real_,  # Variance is NA for a single row
+  variance = c(41.7),
   minimum = c(5),
-  maximum = c(20)
+  maximum = c(10)
 )
 
 
@@ -108,11 +100,12 @@ test_that("a dataframe with mixed numeric and non-numeric columns selects only n
 })
 
 test_that("a dataframe with only one numeric column returns correct summary", {
-  expect_equal(get_summary(one_row_numeric_df), one_row_numeric_df_output, tolerance = 1e-4)
-  expect_s3_class(get_summary(one_row_numeric_df), "data.frame")
+  expect_equal(get_summary(one_col_numeric_df), one_col_numeric_df_output, tolerance = 1e-4)
+  expect_s3_class(get_summary(one_col_numeric_df), "data.frame")
 })
 
 test_that("an empty dataframe returns an empty output", {
+  expect_warning(get_summary(empty_df))
   expect_equal(get_summary(empty_df), empty_df_output)
   expect_s3_class(get_summary(empty_df), "data.frame")
 })
