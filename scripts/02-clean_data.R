@@ -15,32 +15,14 @@ Usage: 02-clean_data.R --file_path=<file_path> --output_train_path=<output_train
 
 opt <- docopt(doc)
 
+# reading in data
 abalone_data <- read_csv(opt$file_path)
 
 # Calling abstracted clean data function 
-
 abalone_data <- clean_data(abalone_data)
 
-# # Reversing the scaling for readability purposes 
-# abalone_data <- abalone_data |> 
-#   mutate(length = length * 200,
-#          diameter = diameter * 200,
-#          height = height * 200,
-#          whole_weight = whole_weight * 200,
-#          shucked_weight = shucked_weight * 200,
-#          viscera_weight = viscera_weight * 200,
-#          shell_weight = shell_weight * 200)
-
-
-# # Creating the new target variable (age)
-# abalone_data <- abalone_data |> 
-#   mutate(age = rings + 1.5)
-
-# # Clean data - removing old target variable and removing unecessary categorical sex variable 
-# abalone_no_sex <- abalone_data |> select(-sex, -rings)
 
 # Data validation
-# Create an agent and set the data table
 # Create an agent for data validation
 agent <- create_agent(tbl = abalone_data) |>  
 

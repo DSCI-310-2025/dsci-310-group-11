@@ -3,7 +3,7 @@ source("R/clean_data.R")
 
 set.seed(1234)
 
-# Raw data for tests
+# Data for testing clean_data function 
 # Data with scaled values and no age column (raw data)
 data_raw <- data.frame(length = c(1:10),
                         diameter = c(1:10), 
@@ -41,7 +41,6 @@ data_with_age <- data.frame(length = data_scaled$length * 200,
 
 
 # Tests for clean_data function 
-
 test_that("clean data is returned unscaled with new target and removed columns", {
     cleaned_data <- clean_data(data_raw)
 
@@ -53,11 +52,11 @@ test_that("clean data is returned unscaled with new target and removed columns",
     expect_true(isTRUE(comparison_result))
 })
 
-# further testing is done with data validation on data used for analysis in the script file 
+# further testing is done through data validation on data used for analysis in the script file 
 
 
-# Testing data for data split function 
-data_raw_20 <- data.frame(length = c(1:100),
+# Testing data for data split function (larger for stratification to work during splitting)
+data_raw_100 <- data.frame(length = c(1:100),
                         diameter = c(1:100), 
                         height = c(1:100),
                         whole_weight = c(1:100),
@@ -68,20 +67,20 @@ data_raw_20 <- data.frame(length = c(1:100),
                         rings = sample(1:20, 100, replace = TRUE)
 )
 
-data_with_age_20 <- data.frame(length = data_raw_20$length * 200,
-                        diameter = data_raw_20$diameter * 200,
-                        height = data_raw_20$height * 200,
-                        whole_weight = data_raw_20$whole_weight * 200,
-                        shucked_weight = data_raw_20$shucked_weight * 200,
-                        viscera_weight = data_raw_20$viscera_weight * 200,
-                        shell_weight = data_raw_20$shell_weight * 200,
-                        age = data_raw_20$rings + 1.5
+data_with_age_100 <- data.frame(length = data_raw_100$length * 200,
+                        diameter = data_raw_100$diameter * 200,
+                        height = data_raw_100$height * 200,
+                        whole_weight = data_raw_100$whole_weight * 200,
+                        shucked_weight = data_raw_100$shucked_weight * 200,
+                        viscera_weight = data_raw_100$viscera_weight * 200,
+                        shell_weight = data_raw_100$shell_weight * 200,
+                        age = data_raw_100$rings + 1.5
 )
 
 # Tests for split_data function 
 
 test_that("split_data splits the clean data correctly", {
-    splits <- split_data(data_with_age_20)
+    splits <- split_data(data_with_age_100)
     
     # Test that the function returns a list with train and test in the names
     expect_true(is.list(splits))
@@ -89,10 +88,10 @@ test_that("split_data splits the clean data correctly", {
     expect_true("test" %in% names(splits))
 
     # Check the total number of rows in the train and test sets
-    expect_equal(nrow(splits$train) + nrow(splits$test), nrow(data_with_age_20))
+    expect_equal(nrow(splits$train) + nrow(splits$test), nrow(data_with_age_100))
 
     # Allow for a larger rounding error (e.g., 5% difference)
-    expected_train_size <- floor(0.7 * nrow(data_with_age_20))
+    expected_train_size <- floor(0.7 * nrow(data_with_age_100))
     expect_true(abs(nrow(splits$train) - expected_train_size) <= expected_train_size * 0.05)  # 5% margin of error
 
     # Optionally: Check that the train/test sets are non-empty
