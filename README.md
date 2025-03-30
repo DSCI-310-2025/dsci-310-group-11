@@ -66,6 +66,11 @@ docker-compose rm
 - `ggplot2`(3.5.1): for custom data visualizations
 - `readr`(2.1.5): for reading and writing CSV files
 - `rmarkdown`(2.29): for generating reports and documentation
+- `knitr` (1.49): For dynamic report generation with R Markdown
+- `pointblank` (0.12.2): For data validation and quality checks
+- `testthat` (3.2.3): For unit testing and quality assurance of R scripts
+- `docopt` (0.7.2): For command-line argument parsing
+
 
 ## Licenses
 This project is licensed under the terms specified in `LICENSE.md`. Specifically, the `MIT License` and `Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)` licenses. 
