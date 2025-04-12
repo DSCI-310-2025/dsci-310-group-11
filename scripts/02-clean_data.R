@@ -70,10 +70,9 @@ expect_false("rings" %in% colnames(abalone_data))
 
 # Splitting the data into training and testing sets
 set.seed(1234)
-split_data(abalone_data)
 
-abalone_train
-abalone_test
+abalone_train <- split_data(abalone_data)[["train"]]
+abalone_test <- split_data(abalone_data)[["test"]]
 
 
 # Creating the training and testing output files 

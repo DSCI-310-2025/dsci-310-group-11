@@ -47,9 +47,10 @@ split_data <- function(clean_data) {
     set.seed(1234)
     abalone_split <- rsample::initial_split(clean_data, prop = 0.7, strata = age)
     
-    #assigning to variables in global environment 
-    abalone_train <<- rsample::training(abalone_split)
-    abalone_test <<- rsample::testing(abalone_split)
+    #assigning 
+    abalone_train <- rsample::training(abalone_split)
+    abalone_test <- rsample::testing(abalone_split)
 
-    return(list(train = abalone_train, test = abalone_test))
+    return(list(train = abalone_train, 
+    test = abalone_test))
 }
