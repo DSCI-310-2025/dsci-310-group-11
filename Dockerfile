@@ -8,4 +8,5 @@ RUN Rscript -e "install.packages('remotes')" && \
     Rscript -e "remotes::install_version('knitr', version='1.49')" && \
     Rscript -e "remotes::install_version('pointblank', version='0.12.2')" && \
     Rscript -e "remotes::install_version('testthat', version='3.2.3')" && \
-    Rscript -e "remotes::install_version('docopt', version='0.7.1')"
+    Rscript -e "remotes::install_version('docopt', version='0.7.1')" && \
+    Rscript -e "remotes::install_github('DSCI-310-2025/abalone.analysis')"
