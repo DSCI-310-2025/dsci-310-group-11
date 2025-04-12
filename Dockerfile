@@ -1,16 +1,12 @@
 FROM rocker/rstudio:4.4.2 
 
-# Install pak and use it to install all required packages
-RUN Rscript -e "install.packages('pak', repos = 'https://cran.rstudio.com'); \
-    pak::pkg_install(c( \
-        'tidymodels@1.3.0', \
-        'rmarkdown@2.29', \
-        'readr@2.1.5', \
-        'GGally@2.2.1', \
-        'knitr@1.49', \
-        'pointblank@0.12.2', \
-        'testthat@3.2.3', \
-        'docopt@0.7.1' \
-    ))"
-
-RUN Rscript -e "pak::pkg_install('DSCI-310-2025/abalone.analysis')"
+RUN Rscript -e "install.packages('remotes')" && \
+    Rscript -e "remotes::install_version('tidymodels', version='1.3.0')" && \
+    Rscript -e "remotes::install_version('rmarkdown', version='2.29')" && \
+    Rscript -e "remotes::install_version('readr', version='2.1.5')" && \
+    Rscript -e "remotes::install_version('GGally', version='2.2.1')" && \
+    Rscript -e "remotes::install_version('knitr', version='1.49')" && \
+    Rscript -e "remotes::install_version('pointblank', version='0.12.2')" && \
+    Rscript -e "remotes::install_version('testthat', version='3.2.3')" && \
+    Rscript -e "remotes::install_version('docopt', version='0.7.1')" && \
+    Rscript -e "remotes::install_github('DSCI-310-2025/abalone.analysis')"
