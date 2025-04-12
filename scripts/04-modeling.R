@@ -2,7 +2,7 @@ library(readr)
 library(tidymodels)
 library(docopt)
 library(pointblank)
-source("R/build_model.R")
+library(abalone.analysis)
 
 "This script creates the linear regression model, analyzes the performance of the model, and creates output visualizations
 
@@ -17,10 +17,7 @@ abalone_test <- read_csv(opt$test_path)
 set.seed(1234)
 
 
-fit <- build_model(abalone_train)
-
-# inline tests for build_model
-source("tests/testthat/test-build_model.R")
+fit <- build_model(func = age ~ diameter + height + shell_weight, training = abalone_train)
 
 coefs <- tidy(fit)
 
