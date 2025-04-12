@@ -37,16 +37,8 @@ all_non_numeric_df <- tibble(
 
 
 
-# expected test outputs
-# all_numeric_df_output <- tibble(
-#   variable = c("age", "shell_weight", "diameter", "height"),
-#   mean = c(12.5, 0.25, 0.65, 0.065),
-#   median = c(12.5, 0.25, 0.65, 0.065),
-#   variance = c(41.7, 0.01667, 0.01667, 0.000167),
-#   minimum = c(5, 0.1, 0.5, 0.05),
-#   maximum = c(20, 0.4, 0.8, 0.08)
-# )
 
+# expected outputs
 all_numeric_df_output <- tibble(
   variable = c("age", "diameter", "height", "shell_weight"),
   mean = c(12.5, 0.65, 0.065, 0.25),
@@ -91,8 +83,8 @@ empty_df_output <- tibble(
 # tests
 test_that("a dataframe with numeric values returns correct summary", {
   expect_equal(
-    get_summary(all_numeric_df), 
-    all_numeric_df_output, 
+    get_summary(all_numeric_df),
+    all_numeric_df_output,
     tolerance = 1e-3  # Increased tolerance
   )
   expect_s3_class(get_summary(all_numeric_df), "data.frame")

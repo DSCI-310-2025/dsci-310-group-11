@@ -1,6 +1,7 @@
 library(readr)
 library(tidymodels)
 library(docopt)
+library(pointblank)
 source("R/build_model.R")
 
 "This script creates the linear regression model, analyzes the performance of the model, and creates output visualizations
