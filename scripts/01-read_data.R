@@ -14,6 +14,7 @@ data_file <- download_data(opt$url)
 
 # data validation validation
 agent <- create_agent(tbl = data_file, tbl_name = "abalone_data") |>
+  col_vals_in_set(columns = vars(sex), set = c("M", "F", "I")) |>
   col_exists(vars(sex, length, diameter, height,
                   whole_weight, shucked_weight,
                   viscera_weight, shell_weight, rings)) |>

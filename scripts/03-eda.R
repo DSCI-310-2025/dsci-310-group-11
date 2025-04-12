@@ -51,6 +51,35 @@ if (any(agent$validation_set$f_failed)) {
   stop("❌ summary validation failed: One or more pointblank checks did not pass.")
 }
 
+# --- VALIDATE output file types using pointblank ---
+# Create a tibble to validate image file types (.png)
+output_files <- tibble::tibble(
+  plot1 = opt$output_path1,
+  plot2 = opt$output_path3
+)
+
+agent_files <- create_agent(tbl = output_files, tbl_name = "output_files") |>
+  col_vals_regex(
+    columns = vars(plot1, plot2),
+    regex = "\\.png$"
+  ) |>
+  interrogate()
+
+if (any(agent_files$validation_set$f_failed)) {
+  stop("❌ Output path validation failed: One or more image paths are not .png files.")
+}
+
+# Validate that the summary table output file is a .csv
+output_csv <- tibble::tibble(summary_file = opt$output_path2)
+
+agent_csv <- create_agent(tbl = output_csv, tbl_name = "output_csv") |>
+  col_vals_regex(columns = vars(summary_file), regex = "\\.csv$") |>
+  interrogate()
+
+if (any(agent_csv$validation_set$f_failed)) {
+  stop("❌ Output path validation failed: Summary file is not in .csv format.")
+}
+
 # histogram of abalone age
 age_histogram <- abalone_train |>
   ggplot(aes(x = age)) +
