@@ -10,6 +10,7 @@ RUN Rscript -e "install.packages('pak', repos = 'https://cran.rstudio.com'); \
         'knitr@1.49', \
         'pointblank@0.12.2', \
         'testthat@3.2.3', \
-        'docopt@0.7.1', \
-        'DSCI-310-2025/abalone.analysis' \
+        'docopt@0.7.1' \
     ))"
+
+RUN Rscript -e "pak::pkg_install('DSCI-310-2025/abalone.analysis')"
