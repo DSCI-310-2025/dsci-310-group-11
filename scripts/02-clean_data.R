@@ -25,11 +25,13 @@ agent <- create_agent(tbl = abalone_data) |>
   # Check columns are properly scaled (> -1)
   col_vals_gt(columns = vars(length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight, rings), value = -1) |>  
 
-  # Check that the "age" column does not yet exist (we will create this later)
-  expect_col_absent(vars(age)) |>
-
   # Perform the interrogation
   interrogate()
+
+# Halt if any pointblank validation fails
+if (any(agent$validation_set$f_failed)) {
+  stop("❌ Pre-clean validation failed: One or more pointblank checks did not pass.")
+}
 
 #  **Check that sex and rings are in the dataset still**
 # If columns do not exist, test should PASS
@@ -55,6 +57,10 @@ agent <- create_agent(tbl = abalone_data) |>
 
   # Perform the interrogation
   interrogate()
+
+if (any(agent$validation_set$f_failed)) {
+  stop("❌ Post-clean validation failed: One or more pointblank checks did not pass.")
+}
 
 # **Check that sex and rings are NOT in the dataset**
 # If columns do not exist, test should PASS

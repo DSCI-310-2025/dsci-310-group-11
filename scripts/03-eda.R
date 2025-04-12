@@ -32,20 +32,24 @@ source("tests/testthat/test-get_summary.R")
 # create agent for data validation
 agent <- create_agent(tbl = abalone_train_summ) |>
 
-# check that columns do not contain null values
-col_vals_not_null(columns = everything()) |>
+  # check that columns do not contain null values
+  col_vals_not_null(columns = everything()) |>
 
-# check that all columns are numeric
-col_is_numeric(columns = everything()) |>
+  # check that all columns are numeric
+  col_is_numeric(columns = vars(mean, median, variance, minimum, maximum)) |>
 
-# check that all rows are complete and are not missing values
-rows_complete()
+  # check that it includes a variable column
+  col_exists("variable") |>
 
-# perform the interrogation
-interrogate()
+  # check that all rows are complete and are not missing values
+  rows_complete() |>
 
+  # perform the interrogation
+  interrogate()
 
-
+if (any(agent$validation_set$f_failed)) {
+  stop("❌ summary validation failed: One or more pointblank checks did not pass.")
+}
 
 # histogram of abalone age
 age_histogram <- abalone_train |>

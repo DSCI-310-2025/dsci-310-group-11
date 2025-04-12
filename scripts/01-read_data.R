@@ -27,6 +27,11 @@ agent <- create_agent(tbl = data_file, tbl_name = "abalone_data") |>
   col_vals_gt(vars(rings), value = 0) %>%  # assuming no negative values for 'rings'
   interrogate()
 
+# Stop execution if any validation failed
+if (any(agent$validation_set$f_failed)) {
+  stop("❌ One or more data validation checks failed. Aborting execution.")
+}
+
 # inline tests for read_data
 source("tests/testthat/test-download_data.R")
 
