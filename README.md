@@ -12,19 +12,19 @@ The project focuses on using non-invasive measurements to estimate abalone age, 
 ## How to Run the Analysis
 ---
 ### 1. Clone the Repository
-Clone the `abalone_analysis` repository from GitHub to your local machine:
+Clone the `abalone_analysis` repository from GitHub to your local machine. In your computer terminal: 
 ```sh
 git clone https://github.com/DSCI-310-2025/dsci-310-group-11.git
 ```
 
 ### 2. Navigate to the Project Directory
-In your terminal changing your working directory to the newly cloned repository:
+In your terminal change your working directory to the newly cloned repository:
 ```sh
 cd dsci-310-group-11
 ```
 
 ### 3. Start the Container
-Ensure Docker is installed and running on your system. Start the container using docker-compose:
+Ensure Docker is installed and running on your system. Start the container using docker-compose in your terminal:
 ```sh
 docker-compose up
 ```
