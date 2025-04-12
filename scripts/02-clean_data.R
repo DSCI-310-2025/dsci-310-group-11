@@ -3,6 +3,7 @@ library(tidymodels)
 library(readr)
 library(docopt)
 library(pointblank)
+library(testthat)
 source("R/clean_data.R")
 
 # Cleaning the data
