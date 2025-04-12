@@ -18,22 +18,40 @@ opt <- docopt(doc)
 # reading in data
 abalone_data <- read_csv(opt$file_path)
 
-# Calling abstracted clean data function 
+# Data validation
+# Create an agent for data validation
+agent <- create_agent(tbl = abalone_data) |>
+
+  # Check columns are properly scaled (> -1)
+  col_vals_gt(columns = vars(length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight, rings), value = -1) |>  
+
+  # Check that the "age" column does not yet exist (we will create this later)
+  expect_col_absent(vars(age)) |>
+
+  # Perform the interrogation
+  interrogate()
+
+#  **Check that sex and rings are in the dataset still**
+# If columns do not exist, test should PASS
+expect_true("sex" %in% colnames(abalone_data))
+expect_true("rings" %in% colnames(abalone_data))
+
+# Calling abstracted clean data function
 abalone_data <- clean_data(abalone_data)
 
 
-# Data validation
+# Data validation after cleaning
 # Create an agent for data validation
-agent <- create_agent(tbl = abalone_data) |>  
+agent <- create_agent(tbl = abalone_data) |>
 
   # Check columns are properly scaled (> -1)
   col_vals_gt(columns = vars(length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight), value = -1) |>  
 
   # Check that the "age" column exists
-  col_exists("age") |>  
+  col_exists("age") |>
 
   # Check that age is greater than 1.5
-  col_vals_gt(columns = vars(age), value = 1.5) |>  
+  col_vals_gt(columns = vars(age), value = 1.5) |>
 
   # Perform the interrogation
   interrogate()
@@ -44,7 +62,7 @@ expect_false("sex" %in% colnames(abalone_data))
 expect_false("rings" %in% colnames(abalone_data))
 
 
-# Splitting the data into training and testing sets 
+# Splitting the data into training and testing sets
 set.seed(1234)
 split_data(abalone_data)
 
