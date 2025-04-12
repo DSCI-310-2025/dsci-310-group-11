@@ -3,7 +3,6 @@ library(GGally)
 library(readr)
 library(docopt)
 library(tidymodels)
-library(testthat)
 library(pointblank)
 source("R/get_summary.R")
 

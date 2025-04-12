@@ -1,6 +1,5 @@
 library(readr)
 library(docopt)
-library(testthat)
 library(pointblank)
 source("R/download_data.R")
 
