@@ -1,4 +1,4 @@
-#import statements 
+#import statements
 library(tidymodels)
 library(readr)
 library(docopt)
@@ -6,7 +6,7 @@ library(testthat)
 library(pointblank)
 source("R/clean_data.R")
 
-# Cleaning the data 
+# Cleaning the data
 
 "This script cleans the `abalone_data` by reversing the scaling, creating a new age target variable, removing the old target variable and removing an unnecessary categorical variable. 
 Then the script creates the training and testing sets. 

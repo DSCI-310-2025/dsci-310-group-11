@@ -1,5 +1,5 @@
 library(testthat)
-source("../../R/download_data.R")
+source("R/download_data.R")
 
 # Valid URL to the Abalone dataset
 valid_url <- "https://archive.ics.uci.edu/static/public/1/abalone.zip"
