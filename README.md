@@ -5,26 +5,26 @@
   - `Alex Haddon, Maxine Paredes, Edward Sobczak, Emma Wolfe`
 
 ## Project Summary
-The goal of this project is to apply machine learning techniques to predict the age of abalone based on its physical attributes such as shell weight, diameter, and height. Traditional methods for determining abalone age involve invasive procedures like shell sectioning, which can be labor intensive. Using a UC Irvine Machine Learning Repository’s dataset, we developed a predictive model for abalone age, which is vital for fisheries management and sustainability efforts.
+The goal of this project is to apply machine learning techniques to predict the age of abalone based on its physical attributes such as shell weight, diameter, and height. Traditional methods for determining abalone age involve invasive procedures like shell sectioning, which can be labor intensive. Using a UC Irvine Machine Learning Repository’s dataset, we developed a predictive model for [abalone age](https://archive.ics.uci.edu/dataset/1/abalone), which is vital for fisheries management and sustainability efforts.
 
 The project focuses on using non-invasive measurements to estimate abalone age, potentially offering a faster and more accessible alternative to traditional methods. Through the application of linear regression, the study explores how physical features of abalone, such as shell weight and diameter, correlate with age, aiming to improve predictive accuracy.
 
 ## How to Run the Analysis
 ---
 ### 1. Clone the Repository
-Clone the `abalone_analysis` repository from GitHub to your local machine:
+Clone the `abalone_analysis` repository from GitHub to your local machine. In your computer terminal: 
 ```sh
 git clone https://github.com/DSCI-310-2025/dsci-310-group-11.git
 ```
 
 ### 2. Navigate to the Project Directory
-In your terminal changing your working directory to the newly cloned repository:
+In your terminal change your working directory to the newly cloned repository:
 ```sh
 cd dsci-310-group-11
 ```
 
 ### 3. Start the Container
-Ensure Docker is installed and running on your system. Start the container using docker-compose:
+Ensure Docker is installed and running on your system. Start the container using docker-compose in your terminal:
 ```sh
 docker-compose up
 ```
