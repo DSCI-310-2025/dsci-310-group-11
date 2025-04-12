@@ -26,6 +26,7 @@ As a result, researchers have explored alternative techniques, such as using mac
 Researchers have explored alternative techniques to address these challenges, including machine learning (ML) models. 
 By analyzing physical measurements such as length and weight, ML algorithms can predict an abalone's age without invasive procedures. 
 For instance, a study utilized various machine learning algorithms, including linear regression, logistic regression, K-Nearest Neighbors (KNN), Decision Tree, Random Forest, and Support Vector Machine (SVM), to predict abalone age based on these physical attributes. The comparative performances of each model were assessed using appropriate performance indicators such as precision, recall, or F1-score [@Guney2022].
+In this report we have decided to use linear regression due to the interpretability, computational efficiency and simplicity of the model. This model can serve as a baseline model for future analysis. 
 
 ## Research Question 
 Can abalone age be predicted and which features are most strongly correlated? 
