@@ -1,7 +1,10 @@
 library(docopt)
 library(GGally)
 library(readr)
+library(docopt)
 library(tidymodels)
+library(testthat)
+library(pointblank)
 source("R/get_summary.R")
 
 "this script conducts the exploratory data analysis on the abalone dataset
@@ -24,6 +27,25 @@ abalone_train_summ <- get_summary(abalone_train)
 
 # inline tests for get_summary()
 source("tests/testthat/test-get_summary.R")
+
+# data validation
+# create agent for data validation
+agent <- create_agent(tbl = abalone_train_summ) |>
+
+# check that columns do not contain null values
+col_vals_not_null(columns = everything()) |>
+
+# check that all columns are numeric
+col_is_numeric(columns = everything()) |>
+
+# check that all rows are complete and are not missing values
+rows_complete()
+
+# perform the interrogation
+interrogate()
+
+
+
 
 # histogram of abalone age
 age_histogram <- abalone_train |>
