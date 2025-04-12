@@ -61,15 +61,7 @@ docker-compose rm
 ---
 
 ## Dependencies
-- `tidymodels`(1.3.0): for modeling and data preprocessing 
-- `GGally`(2.2.1): for visualization, including correlation plots
-- `ggplot2`(3.5.1): for custom data visualizations
-- `readr`(2.1.5): for reading and writing CSV files
-- `rmarkdown`(2.29): for generating reports and documentation
-- `knitr` (1.49): For dynamic report generation with R Markdown
-- `pointblank` (0.12.2): For data validation and quality checks
-- `testthat` (3.2.3): For unit testing and quality assurance of R scripts
-- `docopt` (0.7.2): For command-line argument parsing
+[Docker](https://www.docker.com/) is a container solution used to manage the software dependencies for this project. The Docker image used for this project is based on `rocker/rstudio:4.4.2 ` image. Additional dependencies are specified in the [Dockerfile.](https://github.com/DSCI-310-2025/dsci-310-group-11/blob/main/Dockerfile)
 
 
 ## Licenses
