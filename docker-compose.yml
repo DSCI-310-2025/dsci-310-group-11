@@ -2,6 +2,7 @@ services:
   abalone-env:
     image: alexhaddon/abalone_analysis:latest
     container_name: abalone_analysis
+    platform: linux/amd64
     ports:
       - "8787:8787"
     volumes:
@@ -9,7 +10,3 @@ services:
     environment:
       PASSWORD: "password"
       DISABLE_AUTH: true
-    build:
-      platforms:
-        - "linux/arm64"
-        - "linux/amd64"
