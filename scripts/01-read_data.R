@@ -28,37 +28,6 @@ agent <- create_agent(tbl = data_file, tbl_name = "abalone_data") |>
   interrogate()
 
 # inline tests for read_data
-# test_results <- list(
-#   test_that("`download_data` returns a data frame", {
-#     expect_s3_class(data_file, "data.frame")
-#   }),
-  
-#   test_that("`download_data` returns data with correct column names", {
-#     expected_columns <- c("sex", 
-#                           "length", 
-#                           "diameter", 
-#                           "height", 
-#                           "whole_weight", 
-#                           "shucked_weight", 
-#                           "viscera_weight", 
-#                           "shell_weight", 
-#                           "rings")
-#     expect_equal(colnames(data_file), expected_columns)
-#   }),
-  
-#   test_that("`download_data` returns a non-empty dataset", {
-#     expect_true(nrow(data_file) > 0, info = "Dataset should not be empty")
-#   }),
-  
-#   test_that("`download_data` returns data with 9 columns", {
-#     expect_equal(ncol(data_file), 9)
-#   })
-# )
-
-# # Check if any tests failed and exit with an error if they did
-# if (any(vapply(test_results, inherits, logical(1), "expectation_error"))) {
-#   stop("One or more tests failed. Aborting execution.")
-# }
 source("tests/testthat/test-download_data.R")
 
 write_csv(data_file, file = opt$output_path)
