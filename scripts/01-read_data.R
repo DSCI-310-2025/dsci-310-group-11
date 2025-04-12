@@ -1,7 +1,8 @@
 library(readr)
 library(docopt)
 library(pointblank)
-source("R/download_data.R")
+library(abalone.analysis)
+
 
 "This script loads and cleans the data
 Usage: 01-read_data.R --url=<file_path> --output_path=<output_path>
@@ -32,8 +33,6 @@ if (any(agent$validation_set$f_failed)) {
   stop("❌ One or more data validation checks failed. Aborting execution.")
 }
 
-# inline tests for read_data
-source("tests/testthat/test-download_data.R")
 
 write_csv(data_file, file = opt$output_path)
 

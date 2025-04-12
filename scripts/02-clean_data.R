@@ -4,7 +4,8 @@ library(readr)
 library(docopt)
 library(pointblank)
 library(testthat)
-source("R/clean_data.R")
+library(abalone.analysis)
+
 
 # Cleaning the data
 
@@ -79,7 +80,6 @@ abalone_test <- split_data(abalone_data)[["test"]]
 write_csv(abalone_train, opt$output_train_path)
 write_csv(abalone_test, opt$output_test_path)
 
-source("tests/testthat/test-clean_data.R")
 
 print("finished cleaning and splitting the data")
 # command to run: Rscript scripts/02-clean_data.R --file_path=data/raw/abalone_data.csv --output_train_path=data/clean/abalone_train.csv --output_test_path=data/clean/abalone_test.csv

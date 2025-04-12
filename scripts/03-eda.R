@@ -4,7 +4,8 @@ library(readr)
 library(docopt)
 library(tidymodels)
 library(pointblank)
-source("R/get_summary.R")
+library(abalone.analysis)
+
 
 "this script conducts the exploratory data analysis on the abalone dataset
 includes preliminary analysis, summary statistics for the predictor variables 
@@ -24,8 +25,6 @@ correlation_plot
 # summary statistics for abalone data using abstracted function
 abalone_train_summ <- get_summary(abalone_train)
 
-# inline tests for get_summary()
-source("tests/testthat/test-get_summary.R")
 
 # data validation
 # create agent for data validation
